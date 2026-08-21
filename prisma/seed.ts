@@ -12,7 +12,7 @@ async function main() {
   const siteSetting = {
     agencyName:
       "Dinas Penanaman Modal, Transmigrasi dan Tenaga Kerja Kabupaten Aceh Utara",
-    shortName: "DPMPTTK Aceh Utara",
+    shortName: "DPMTRANSNAKER Aceh Utara",
     tagline: "Melayani dengan Profesional, Transparan, dan Akuntabel",
     address: "[Alamat dinas - ganti dengan alamat resmi]",
     phone: "[Nomor telepon dinas]",
@@ -551,7 +551,7 @@ async function main() {
   // ---------------------------------------------------------------
   const news = [
     {
-      slug: "selamat-datang-di-website-dpmpttk-aceh-utara",
+      slug: "selamat-datang-di-website-dpmtransnaker-aceh-utara",
       title:
         "Selamat Datang di Website Dinas Penanaman Modal, Transmigrasi dan Tenaga Kerja",
       category: "Pengumuman",
@@ -590,6 +590,21 @@ async function main() {
   ];
 
   for (const n of news) {
+    const legacySlug = n.slug.replace("dpmtransnaker", "dpmpttk");
+    if (legacySlug !== n.slug) {
+      const legacyNews = await prisma.news.findUnique({
+        where: { slug: legacySlug },
+      });
+      const currentNews = await prisma.news.findUnique({
+        where: { slug: n.slug },
+      });
+      if (legacyNews && !currentNews) {
+        await prisma.news.update({
+          where: { id: legacyNews.id },
+          data: { slug: n.slug },
+        });
+      }
+    }
     let divisionId: number | null = null;
     if (n.divisionSlug) {
       const division = await prisma.division.findUnique({

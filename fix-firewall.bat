@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title Perbaikan Firewall - Website DPMPTTK Aceh Utara
+title Perbaikan Firewall - Website DPMTRANSNAKER Aceh Utara
 cd /d "%~dp0"
 
 rem ---- Minta izin Administrator jika belum ada ----
@@ -18,7 +18,7 @@ echo   agar HP/PC lain di WiFi bisa membuka website
 echo ==================================================
 echo.
 
-netsh advfirewall firewall add rule name="DPMPTTK Website Port 3000" dir=in action=allow protocol=TCP localport=3000 >nul
+netsh advfirewall firewall add rule name="DPMTRANSNAKER Website Port 3000" dir=in action=allow protocol=TCP localport=3000 >nul
 if errorlevel 1 (
   echo [ERROR] Gagal menambahkan aturan firewall.
   echo         Coba jalankan ulang file ini dengan klik kanan - Run as administrator.

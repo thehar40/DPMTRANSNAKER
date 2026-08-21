@@ -59,7 +59,7 @@ export function LoginForm() {
         <div className="card p-8">
           <div className="flex flex-col items-center text-center">
             <Logo
-              shortName="DPMPTTK Aceh Utara"
+              shortName="DPMTRANSNAKER Aceh Utara"
               subtitle="Panel Admin"
               imageClassName="h-16 w-16"
             />

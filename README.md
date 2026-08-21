@@ -72,7 +72,7 @@ npx prisma db seed
 
 Perintah `db push` membuat seluruh tabel di database, dan `db seed` mengisi data awal: pengaturan situs, profil, user admin, 6 bidang, 9 layanan, 6 contact person, 3 berita, 3 tutorial video, dan 4 galeri placeholder.
 
-> Alternatif lokal tanpa internet: install PostgreSQL di komputer (atau Docker), lalu isi `DATABASE_URL` dengan koneksi lokal, misalnya `postgresql://postgres:password@localhost:5432/dpmpttk`. Langkah selanjutnya sama.
+> Alternatif lokal tanpa internet: install PostgreSQL di komputer (atau Docker), lalu isi `DATABASE_URL` dengan koneksi lokal, misalnya `postgresql://postgres:password@localhost:5432/dpmtransnaker`. Langkah selanjutnya sama.
 
 ## 6. Seed Data Awal
 
@@ -215,14 +215,14 @@ npx prisma db seed
 
 **Langkah 2 — Push kode ke GitHub**
 
-1. Buat repository baru di github.com (mis. `dpmpttk-aceh-utara`).
+1. Buat repository baru di github.com (mis. `dpmtransnaker-aceh-utara`).
 2. Di PowerShell folder proyek:
 
 ```powershell
 git add .
-git commit -m "Website DPMPTTK Aceh Utara"
+git commit -m "Website DPMTRANSNAKER Aceh Utara"
 git branch -M main
-git remote add origin https://github.com/USERNAME/dpmpttk-aceh-utara.git
+git remote add origin https://github.com/USERNAME/dpmtransnaker-aceh-utara.git
 git push -u origin main
 ```
 
@@ -257,7 +257,7 @@ Website langsung online di `https://nama-proyek.vercel.app` dengan admin panel b
 npx prisma db push
 npx prisma db seed
 npm run build
-pm2 start npm --name dpmpttk -- run start
+pm2 start npm --name dpmtransnaker -- run start
 ```
 
 5. Arahkan domain ke VPS dan pasang reverse proxy (Nginx/Caddy) dengan HTTPS.

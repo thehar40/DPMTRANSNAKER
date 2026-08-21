@@ -96,7 +96,7 @@ for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /c:"IPv4"') do set "LANI
 set "LANIP=%LANIP: =%"
 
 rem ---- Cek aturan firewall untuk akses dari HP/PC lain ----
-netsh advfirewall firewall show rule name="DPMPTTK Website Port 3000" >nul 2>&1
+netsh advfirewall firewall show rule name="DPMTRANSNAKER Website Port 3000" >nul 2>&1
 if errorlevel 1 (
   echo.
   echo [PERHATIAN] Aturan firewall port 3000 belum terpasang.
