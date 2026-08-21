@@ -3,6 +3,7 @@ import {
   getActiveServices,
   getDivisions,
   getPublishedNews,
+  getPublishedTutorials,
 } from "@/lib/data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -15,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/bidang",
     "/layanan",
     "/berita",
+    "/tutorial",
     "/galeri",
     "/kontak",
     "/kebijakan-privasi",
@@ -53,6 +55,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/berita/${item.slug}`,
       lastModified: item.updatedAt,
       changeFrequency: "weekly",
+      priority: 0.6,
+    });
+  }
+
+  const tutorials = await getPublishedTutorials();
+  for (const tutorial of tutorials) {
+    entries.push({
+      url: `${siteUrl}/tutorial/${tutorial.slug}`,
+      lastModified: tutorial.updatedAt,
+      changeFrequency: "monthly",
       priority: 0.6,
     });
   }

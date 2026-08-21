@@ -33,3 +33,7 @@ prisma/*.db-journal
 
 # logo resmi (jangan commit logo resmi milik dinas)
 public/logo-aceh-utara.png
+
+# Video tutorial hasil upload admin (simpan file asli di storage/backup terpisah)
+public/uploads/tutorials/*
+!public/uploads/tutorials/.gitkeep

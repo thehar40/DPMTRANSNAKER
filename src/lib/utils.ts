@@ -42,6 +42,42 @@ export function isValidExternalUrl(url: string | null | undefined): boolean {
   return /^https?:\/\//i.test(url.trim());
 }
 
+export function getVideoEmbedUrl(value: string | null | undefined): string | null {
+  if (!value || !isValidExternalUrl(value)) return null;
+
+  try {
+    const url = new URL(value.trim());
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
+    let videoId = "";
+
+    if (host === "youtu.be") {
+      videoId = url.pathname.split("/").filter(Boolean)[0] ?? "";
+    } else if (host === "youtube.com" || host.endsWith(".youtube.com")) {
+      const embedMatch = url.pathname.match(/^\/embed\/([^/]+)/);
+      const shortsMatch = url.pathname.match(/^\/shorts\/([^/]+)/);
+      videoId = embedMatch?.[1] ?? shortsMatch?.[1] ?? url.searchParams.get("v") ?? "";
+    } else if (host === "vimeo.com" || host.endsWith(".vimeo.com")) {
+      const vimeoId = url.pathname.match(/\/(\d+)(?:$|\/)/);
+      if (vimeoId?.[1]) return `https://player.vimeo.com/video/${vimeoId[1]}`;
+    }
+
+    if (/^[A-Za-z0-9_-]{6,}$/.test(videoId)) {
+      return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+export function isDirectVideoUrl(value: string | null | undefined): boolean {
+  if (!value) return false;
+  const url = value.trim();
+  if (/^\/uploads\/tutorials\/[A-Za-z0-9._/-]+$/i.test(url)) return true;
+  return isValidExternalUrl(url) && /\.(mp4|webm|ogg|mov)(?:[?#].*)?$/i.test(url);
+}
+
 export function isValidMapUrl(url: string | null | undefined): boolean {
   if (!url) return false;
   return isValidExternalUrl(url) && /google\.com\/maps|openstreetmap/i.test(url);

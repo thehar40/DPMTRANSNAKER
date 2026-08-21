@@ -27,7 +27,7 @@ export function DivisionCard({ division, whatsapp }: DivisionCardProps) {
     : null;
 
   return (
-    <article className="card group flex h-full flex-col p-6 transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+    <article className="card card-interactive group flex h-full flex-col p-6">
       <div className="flex items-start justify-between">
         <IconBadge name={division.icon} />
         {division.abbreviation ? (

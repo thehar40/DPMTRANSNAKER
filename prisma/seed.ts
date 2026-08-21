@@ -615,6 +615,67 @@ async function main() {
   console.log(`  ✓ ${news.length} berita`);
 
   // ---------------------------------------------------------------
+  // Tutorial video (dibuat hanya jika slug belum ada)
+  // ---------------------------------------------------------------
+  const tutorials = [
+    {
+      slug: "tutorial-perizinan-oss",
+      title: "Tutorial Perizinan OSS untuk Pelaku Usaha",
+      category: "Perizinan",
+      description:
+        "Panduan umum langkah demi langkah untuk memahami proses perizinan berusaha melalui sistem OSS.",
+      content:
+        "Video tutorial ini merupakan placeholder. Admin dapat mengunggah video resmi melalui menu **Tutorial** di panel admin.\n\n## Pokok Bahasan\n\n- Persiapan data dan dokumen usaha\n- Pembuatan akun OSS\n- Pengisian data usaha\n- Pemeriksaan dan penyimpanan dokumen perizinan",
+      videoUrl: null,
+      thumbnailUrl: "/images/tutorial-oss.svg",
+      duration: null,
+      order: 1,
+    },
+    {
+      slug: "tutorial-pelaporan-lkpm-online",
+      title: "Tutorial Pelaporan LKPM Online",
+      category: "Penanaman Modal",
+      description:
+        "Panduan umum persiapan dan pelaporan Laporan Kegiatan Penanaman Modal secara online.",
+      content:
+        "Video tutorial ini merupakan placeholder. Ganti dengan video resmi mengenai pelaporan LKPM melalui panel admin.\n\n## Pokok Bahasan\n\n- Data yang perlu disiapkan\n- Akses menu LKPM pada OSS\n- Pengisian realisasi kegiatan\n- Pengiriman laporan",
+      videoUrl: null,
+      thumbnailUrl: "/images/tutorial-lkpm.svg",
+      duration: null,
+      order: 2,
+    },
+    {
+      slug: "tutorial-pembuatan-ak1-siapkerja",
+      title: "Tutorial Pembuatan AK1 di Siapkerja",
+      category: "Ketenagakerjaan",
+      description:
+        "Panduan umum pembuatan kartu tanda pencari kerja AK1 melalui aplikasi Siapkerja.",
+      content:
+        "Video tutorial ini merupakan placeholder. Admin dapat menggantinya dengan video resmi cara membuat AK1.\n\n## Pokok Bahasan\n\n- Persiapan KTP, ijazah, dan pas foto\n- Pendaftaran akun\n- Pengisian profil pencari kerja\n- Penyelesaian permohonan AK1",
+      videoUrl: null,
+      thumbnailUrl: "/images/tutorial-ak1.svg",
+      duration: null,
+      order: 3,
+    },
+  ];
+
+  for (const tutorial of tutorials) {
+    const existing = await prisma.tutorial.findUnique({
+      where: { slug: tutorial.slug },
+    });
+    if (!existing) {
+      await prisma.tutorial.create({
+        data: {
+          ...tutorial,
+          status: "published",
+          publishedAt: new Date(),
+        },
+      });
+    }
+  }
+  console.log(`  ✓ ${tutorials.length} tutorial`);
+
+  // ---------------------------------------------------------------
   // Galeri (hanya dibuat jika belum ada)
   // ---------------------------------------------------------------
   if ((await prisma.gallery.count()) === 0) {

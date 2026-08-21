@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ServiceCard } from "@/components/public/service-card";
 import { DivisionCard } from "@/components/public/division-card";
 import { NewsCard } from "@/components/public/news-card";
+import { TutorialCard } from "@/components/public/tutorial-card";
 import { ContactCard } from "@/components/public/contact-card";
 import { SmartImage } from "@/components/ui/smart-image";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -15,6 +16,7 @@ import {
   getActiveServices,
   getDivisions,
   getPublishedNews,
+  getPublishedTutorials,
   getSettings,
 } from "@/lib/data";
 import { SITE_DESCRIPTION } from "@/lib/constants";
@@ -37,7 +39,7 @@ const FEATURED_SERVICE_SLUGS = [
 ];
 
 export default async function HomePage() {
-  const [settings, divisions, services, contacts, newsResult, galleries] =
+  const [settings, divisions, services, contacts, newsResult, galleries, tutorials] =
     await Promise.all([
       getSettings(),
       getDivisions(),
@@ -45,6 +47,7 @@ export default async function HomePage() {
       getActiveContacts(),
       getPublishedNews({ pageSize: 3 }),
       getActiveGalleries(),
+      getPublishedTutorials({ take: 3 }),
     ]);
 
   const featuredServices = FEATURED_SERVICE_SLUGS.map((slug) =>
@@ -100,6 +103,35 @@ export default async function HomePage() {
             Lihat Semua Layanan
             <ArrowRight className="h-4 w-4" />
           </Link>
+        </div>
+      </section>
+
+      {/* Tutorial layanan */}
+      <section className="bg-primary-50/60 py-16 sm:py-20" aria-labelledby="tutorial-heading">
+        <div className="mx-auto max-w-7xl px-4">
+          <SectionHeading
+            eyebrow="Panduan Video"
+            title="Tutorial Layanan"
+            description="Ikuti panduan video untuk memahami proses OSS, LKPM Online, AK1, dan layanan lainnya dengan lebih mudah."
+          />
+          {tutorials.length === 0 ? (
+            <EmptyState
+              title="Belum ada tutorial"
+              description="Video tutorial akan tampil di sini setelah dipublikasikan oleh admin."
+            />
+          ) : (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {tutorials.map((tutorial) => (
+                <TutorialCard key={tutorial.id} tutorial={tutorial} />
+              ))}
+            </div>
+          )}
+          <div className="mt-10 text-center">
+            <Link href="/tutorial" className="btn-secondary">
+              Lihat Semua Tutorial
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 

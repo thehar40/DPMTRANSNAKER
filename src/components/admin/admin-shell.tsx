@@ -14,6 +14,7 @@ import {
   Menu,
   MessageSquare,
   Newspaper,
+  PlayCircle,
   Settings,
   Users,
   X,
@@ -29,6 +30,7 @@ const NAV_ITEMS = [
   { href: "/admin/services", label: "Layanan", icon: ClipboardList },
   { href: "/admin/contacts", label: "Contact Person", icon: Users },
   { href: "/admin/news", label: "Berita", icon: Newspaper },
+  { href: "/admin/tutorials", label: "Tutorial", icon: PlayCircle },
   { href: "/admin/galleries", label: "Galeri", icon: Image },
   { href: "/admin/inquiries", label: "Pertanyaan", icon: MessageSquare },
 ];

@@ -15,7 +15,7 @@ export default async function PublicLayout({
     <div className="flex min-h-screen flex-col bg-slate-50">
       <Topbar />
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main className="site-main flex-1">{children}</main>
       <Footer />
       <FloatingWhatsApp whatsapp={settings.whatsapp} />
     </div>

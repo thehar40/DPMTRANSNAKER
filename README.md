@@ -10,8 +10,8 @@ Tagline: **"Melayani dengan Profesional, Transparan, dan Akuntabel"**
 
 ## 1. Deskripsi
 
-- Halaman publik: Beranda, Profil, Bidang & Layanan, Berita, Galeri, Kontak, Kebijakan Privasi.
-- Panel admin di `/admin` untuk mengelola pengaturan situs, profil dinas, bidang, layanan, contact person, berita, galeri, dan pertanyaan masuk.
+- Halaman publik: Beranda, Profil, Bidang & Layanan, Berita, Tutorial, Galeri, Kontak, Kebijakan Privasi.
+- Panel admin di `/admin` untuk mengelola pengaturan situs, profil dinas, bidang, layanan, contact person, berita, tutorial, galeri, dan pertanyaan masuk.
 - Form kontak publik tersimpan ke database dan terlihat di panel admin.
 - Tombol WhatsApp otomatis dibuat dari nomor contact person (format 08xx / +62 / 62 semuanya didukung).
 
@@ -36,6 +36,8 @@ Tagline: **"Melayani dengan Profesional, Transparan, dan Akuntabel"**
 - Halaman detail bidang dengan tugas/fungsi, layanan, contact person, dan berita terkait.
 - Halaman detail layanan dengan persyaratan, prosedur, tautan aplikasi eksternal, dan contact person.
 - Berita dengan kategori, pencarian, dan pagination. Berita draft tidak tampil untuk publik.
+- Tutorial video untuk panduan OSS, LKPM Online, AK1, dan layanan lainnya.
+- Admin dapat mengunggah video MP4/WebM/OGG/MOV maksimal 100 MB atau menyimpan URL YouTube, Vimeo, dan MP4 eksternal.
 - Galeri dengan filter kategori dan modal pratinjau gambar.
 - Form kontak dengan validasi (nama & pesan wajib, email valid jika diisi, WA hanya angka) dan toast sukses.
 - Floating WhatsApp button (muncul jika nomor utama diisi pada Pengaturan).
@@ -68,7 +70,7 @@ npx prisma db push
 npx prisma db seed
 ```
 
-Perintah `db push` membuat seluruh tabel di database, dan `db seed` mengisi data awal: pengaturan situs, profil, user admin, 6 bidang, 9 layanan, 6 contact person, 3 berita, dan 4 galeri placeholder.
+Perintah `db push` membuat seluruh tabel di database, dan `db seed` mengisi data awal: pengaturan situs, profil, user admin, 6 bidang, 9 layanan, 6 contact person, 3 berita, 3 tutorial video, dan 4 galeri placeholder.
 
 > Alternatif lokal tanpa internet: install PostgreSQL di komputer (atau Docker), lalu isi `DATABASE_URL` dengan koneksi lokal, misalnya `postgresql://postgres:password@localhost:5432/dpmpttk`. Langkah selanjutnya sama.
 
@@ -179,18 +181,19 @@ Format nomor WhatsApp bebas: `081234567890`, `+6281234567890`, atau `62812345678
 4. Ubah **Tautan Aplikasi Eksternal** (wajib diawali `https://`) dan **Label Tombol Eksternal**.
 5. Simpan. Tombol di halaman detail layanan langsung berubah.
 
-## 15. Cara Menambah Bidang, Layanan, Berita, dan Galeri
+## 15. Cara Menambah Bidang, Layanan, Berita, Tutorial, dan Galeri
 
 - **Bidang**: menu Bidang → Tambah Bidang. Isi nama, slug (otomatis), deskripsi, tugas & fungsi, ikon, urutan.
 - **Layanan**: menu Layanan → Tambah Layanan. Pilih bidang, isi persyaratan/prosedur (mendukung Markdown, gunakan `-` untuk list dan `1.` untuk langkah).
 - **Berita**: menu Berita → Tambah Berita. Konten mendukung Markdown (`##` judul, `-` list, `**tebal**`). Pilih status Draft/Terbit. Berita Terbit langsung tampil di publik.
+- **Tutorial**: menu Tutorial → Tambah Tutorial. Pilih file video maksimal 100 MB atau masukkan URL video eksternal. Simpan tutorial sebagai Draft/Terbit. URL YouTube/Vimeo otomatis ditampilkan sebagai embed, sedangkan MP4/WebM/OGG/MOV diputar dengan pemutar video.
 - **Galeri**: menu Galeri → Tambah Galeri. Letakkan file gambar di folder `public/images/`, lalu isi URL gambar dengan `/images/nama-file.jpg`.
 - **Sambutan/Visi Misi/Tupoksi**: menu **Profil Dinas**.
 
 ## 16. Cara Backup Database dan Folder Gambar
 
 - **Database**: dari dashboard Neon (https://console.neon.tech) gunakan menu **Export/Backup**, atau jalankan `npx prisma studio` untuk ekspor data. Untuk Postgres lokal, gunakan `pg_dump`.
-- **Gambar/logo**: salin folder `public/` (khususnya `public/images/` dan `public/logo-aceh-utara.png`).
+- **Gambar/logo/video lokal**: salin folder `public/` (khususnya `public/images/`, `public/uploads/tutorials/`, dan `public/logo-aceh-utara.png`).
 
 ## 17. Cara Deploy ke Internet
 
@@ -240,7 +243,7 @@ Website langsung online di `https://nama-proyek.vercel.app` dengan admin panel b
 
 - Perubahan **konten** (berita, layanan, pengaturan) cukup dari panel admin — tidak perlu deploy ulang.
 - Perubahan **kode** otomatis ter-deploy setiap kali `git push`.
-- File gambar di folder `public/` ikut ter-deploy. Tambahkan foto kegiatan lewat kode (taruh di `public/images/`) lalu deploy ulang.
+- File gambar di folder `public/` ikut ter-deploy. Upload video dari panel admin pada Vercel tidak permanen karena filesystem serverless bersifat sementara. Untuk Vercel, gunakan URL YouTube/Vimeo/MP4 dari storage eksternal. Upload file lokal cocok untuk komputer kantor atau VPS.
 - Free tier Vercel & Neon cukup untuk website dinas dengan traffic normal.
 
 ### VPS (alternatif berbayar, tanpa perubahan kode)
@@ -267,6 +270,7 @@ pm2 start npm --name dpmpttk -- run start
 - Alamat, telepon, email, WhatsApp, media sosial, dan link peta.
 - Sambutan kepala dinas, visi misi, tupoksi, dan nilai pelayanan.
 - Link aplikasi OSS, Sincantik, Siapkerja, Siskop2mi.
+- Video tutorial dan thumbnail (materi seed hanyalah placeholder).
 - Logo (placeholder SVG bukan logo resmi).
 - Foto galeri (SVG placeholder, bukan foto kegiatan asli).
 
@@ -296,6 +300,10 @@ Semua dapat diganti melalui panel admin tanpa mengubah kode.
 │   └── middleware.ts       # Proteksi /admin
 ├── .env                    # Konfigurasi (DATABASE_URL, AUTH_SECRET)
 ├── .env.example
+├── start.bat
+├── fix-firewall.bat
+├── scripts/
+│   └── db-ready.ts
 ├── next.config.js
 ├── tailwind.config.ts
 ├── postcss.config.js

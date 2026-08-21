@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: "/profil", label: "Profil" },
   { href: "/bidang", label: "Bidang & Layanan" },
   { href: "/berita", label: "Berita" },
+  { href: "/tutorial", label: "Tutorial" },
   { href: "/galeri", label: "Galeri" },
   { href: "/kontak", label: "Kontak" },
 ];
@@ -51,7 +52,7 @@ export function Navbar() {
           <Logo shortName="DPMTRANSNAKER" subtitle="Kabupaten Aceh Utara" />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Menu utama">
+        <nav className="hidden items-center gap-1 xl:flex" aria-label="Menu utama">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
@@ -77,7 +78,7 @@ export function Navbar() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="btn-icon lg:hidden"
+          className="btn-icon xl:hidden"
           aria-expanded={open}
           aria-label={open ? "Tutup menu" : "Buka menu"}
         >
@@ -86,7 +87,7 @@ export function Navbar() {
       </div>
 
       {open ? (
-        <div className="border-t border-slate-100 bg-white lg:hidden">
+        <div className="border-t border-slate-100 bg-white xl:hidden">
           <nav className="mx-auto max-w-7xl px-4 py-3" aria-label="Menu seluler">
             <ul className="divide-y divide-slate-100">
               {NAV_ITEMS.map((item) => (

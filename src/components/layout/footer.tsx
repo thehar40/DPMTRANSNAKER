@@ -18,6 +18,7 @@ const FOOTER_NAV = [
   { href: "/bidang", label: "Bidang & Layanan" },
   { href: "/layanan", label: "Layanan" },
   { href: "/berita", label: "Berita" },
+  { href: "/tutorial", label: "Tutorial" },
   { href: "/galeri", label: "Galeri" },
   { href: "/kontak", label: "Kontak" },
   { href: "/kebijakan-privasi", label: "Kebijakan Privasi" },

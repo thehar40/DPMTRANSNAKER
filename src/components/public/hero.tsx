@@ -11,7 +11,7 @@ interface HeroProps {
 
 export function Hero({ tagline, divisionCount, serviceCount }: HeroProps) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white">
+    <section className="hero-grid relative overflow-hidden text-white">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent-400/10 blur-3xl"
@@ -31,7 +31,7 @@ export function Hero({ tagline, divisionCount, serviceCount }: HeroProps) {
             <ClipboardList className="h-3.5 w-3.5" />
             Situs Resmi Dinas Kabupaten Aceh Utara
           </p>
-          <h1 className="text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl">
+          <h1 className="text-balance text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl">
             {SITE_TITLE}
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base">
@@ -73,7 +73,7 @@ export function Hero({ tagline, divisionCount, serviceCount }: HeroProps) {
         </div>
 
         <div className="hidden lg:block">
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-8 backdrop-blur">
+          <div className="glass-panel animate-float-slow rounded-3xl p-8 shadow-2xl shadow-primary-950/20">
             <Logo
               showText={false}
               imageClassName="h-36 w-36 mx-auto"

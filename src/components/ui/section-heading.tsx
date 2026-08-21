@@ -25,8 +25,8 @@ export function SectionHeading({
       {eyebrow ? (
         <p
           className={cn(
-            "mb-2 text-xs font-bold uppercase tracking-widest",
-            light ? "text-accent-300" : "text-primary-600"
+            "mb-3 section-kicker",
+            light && "!text-accent-300"
           )}
         >
           {eyebrow}
@@ -34,7 +34,7 @@ export function SectionHeading({
       ) : null}
       <h2
         className={cn(
-          "text-2xl font-bold sm:text-3xl",
+          "text-balance text-2xl font-bold sm:text-3xl",
           light ? "text-white" : "text-slate-900"
         )}
       >

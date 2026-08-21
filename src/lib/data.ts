@@ -84,6 +84,43 @@ export async function getServiceBySlug(slug: string) {
   }
 }
 
+export interface TutorialQueryOptions {
+  take?: number;
+  category?: string;
+  excludeId?: number;
+}
+
+export async function getPublishedTutorials(
+  options: TutorialQueryOptions = {}
+) {
+  try {
+    const where: Record<string, unknown> = {
+      status: "published",
+      publishedAt: { not: null },
+    };
+    if (options.category) where.category = options.category;
+    if (options.excludeId) where.id = { not: options.excludeId };
+
+    return await prisma.tutorial.findMany({
+      where,
+      orderBy: [{ order: "asc" }, { publishedAt: "desc" }, { id: "desc" }],
+      take: options.take,
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function getTutorialBySlug(slug: string) {
+  try {
+    return await prisma.tutorial.findFirst({
+      where: { slug, status: "published", publishedAt: { not: null } },
+    });
+  } catch {
+    return null;
+  }
+}
+
 export async function getActiveContacts() {
   try {
     return await prisma.contactPerson.findMany({

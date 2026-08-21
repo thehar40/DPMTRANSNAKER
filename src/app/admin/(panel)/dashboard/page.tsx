@@ -7,6 +7,7 @@ import {
   Image,
   MessageSquare,
   Newspaper,
+  PlayCircle,
   Users,
 } from "lucide-react";
 import { prisma } from "@/lib/db";
@@ -21,22 +22,24 @@ export const metadata: Metadata = {
 
 async function getStats() {
   try {
-    const [divisions, services, contacts, news, galleries, inquiries] =
+    const [divisions, services, contacts, news, tutorials, galleries, inquiries] =
       await Promise.all([
         prisma.division.count(),
         prisma.service.count(),
         prisma.contactPerson.count(),
         prisma.news.count(),
+        prisma.tutorial.count(),
         prisma.gallery.count(),
         prisma.inquiry.count(),
       ]);
-    return { divisions, services, contacts, news, galleries, inquiries };
+    return { divisions, services, contacts, news, tutorials, galleries, inquiries };
   } catch {
     return {
       divisions: 0,
       services: 0,
       contacts: 0,
       news: 0,
+      tutorials: 0,
       galleries: 0,
       inquiries: 0,
     };
@@ -64,6 +67,7 @@ export default async function AdminDashboardPage() {
     { label: "Layanan", value: stats.services, icon: ClipboardList, href: "/admin/services", color: "bg-teal-50 text-teal-700" },
     { label: "Contact Person", value: stats.contacts, icon: Users, href: "/admin/contacts", color: "bg-blue-50 text-blue-700" },
     { label: "Berita", value: stats.news, icon: Newspaper, href: "/admin/news", color: "bg-amber-50 text-amber-700" },
+    { label: "Tutorial", value: stats.tutorials, icon: PlayCircle, href: "/admin/tutorials", color: "bg-indigo-50 text-indigo-700" },
     { label: "Galeri", value: stats.galleries, icon: Image, href: "/admin/galleries", color: "bg-purple-50 text-purple-700" },
     { label: "Pertanyaan", value: stats.inquiries, icon: MessageSquare, href: "/admin/inquiries", color: "bg-red-50 text-red-600" },
   ];

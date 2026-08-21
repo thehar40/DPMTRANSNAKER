@@ -132,6 +132,20 @@ export const newsSchema = z.object({
   publishedAt: optDateTime,
 });
 
+export const tutorialSchema = z.object({
+  title: str(1, 300),
+  slug: str(1, 300),
+  category: str(1, 100),
+  description: str(1, 2000),
+  content: optStr(50000),
+  videoUrl: optStr(1000),
+  thumbnailUrl: optStr(500),
+  duration: optStr(50),
+  order: int(),
+  status: z.enum(["draft", "published"]),
+  publishedAt: optDateTime,
+});
+
 export const gallerySchema = z.object({
   title: str(1, 200),
   description: optStr(1000),
@@ -147,4 +161,5 @@ export type DivisionInput = z.infer<typeof divisionSchema>;
 export type ServiceInput = z.infer<typeof serviceSchema>;
 export type ContactInput = z.infer<typeof contactSchema>;
 export type NewsInput = z.infer<typeof newsSchema>;
+export type TutorialInput = z.infer<typeof tutorialSchema>;
 export type GalleryInput = z.infer<typeof gallerySchema>;

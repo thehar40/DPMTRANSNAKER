@@ -9,7 +9,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, breadcrumbs }: PageHeaderProps) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white">
+    <section className="page-header-grid relative overflow-hidden text-white">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent-400/10 blur-3xl"

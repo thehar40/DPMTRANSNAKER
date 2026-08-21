@@ -10,7 +10,7 @@ export async function Topbar() {
     : "#";
 
   return (
-    <div className="bg-primary-950 text-white/90">
+    <div className="bg-primary-950 text-white/90 shadow-inner shadow-black/10">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-1.5 text-xs">
         <div className="flex min-w-0 items-center gap-4">
           <span className="hidden min-w-0 items-center gap-1.5 md:flex">

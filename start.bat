@@ -59,12 +59,27 @@ if not errorlevel 1 (
   exit /b 1
 )
 
-rem ---- Siapkan database jika belum ada datanya ----
+rem ---- Cek database dan tabel Tutorial ----
 call npx tsx scripts/db-ready.ts >nul 2>&1
+if errorlevel 2 (
+  echo [INFO] Menyinkronkan skema database...
+  call npm run db:push
+  if errorlevel 1 (
+    echo.
+    echo [ERROR] Sinkronisasi database gagal.
+    echo         Periksa DATABASE_URL di file .env dan koneksi internet.
+    echo.
+    pause
+    exit /b 1
+  )
+  call npx tsx scripts/db-ready.ts >nul 2>&1
+)
+
+rem ---- Seed hanya untuk database yang benar-benar kosong ----
 if errorlevel 1 (
-  echo [INFO] Menyiapkan database dan data awal pertama kali...
+  echo [INFO] Mengisi database dengan data awal pertama kali...
   echo.
-  call npm run db:setup
+  call npm run db:seed
   if errorlevel 1 (
     echo.
     echo [ERROR] Gagal menyiapkan database.

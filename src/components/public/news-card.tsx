@@ -36,7 +36,7 @@ export function NewsCard({ news }: NewsCardProps) {
   const Icon = CATEGORY_ICONS[news.category] ?? Newspaper;
 
   return (
-    <article className="card group flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+    <article className="card card-interactive group flex h-full flex-col overflow-hidden">
       <div className="relative">
         <SmartImage
           src={news.coverImage}
