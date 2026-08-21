@@ -1,0 +1,144 @@
+// Skema database website Dinas Penanaman Modal, Transmigrasi dan Tenaga Kerja
+// Kabupaten Aceh Utara. Menggunakan PostgreSQL (Neon) agar kompatibel dengan
+// Vercel. Untuk pengembangan lokal bisa memakai Neon yang sama atau Postgres lokal.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  username  String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  id            Int      @id @default(1)
+  agencyName    String
+  shortName     String
+  tagline       String
+  address       String
+  phone         String
+  email         String
+  whatsapp      String
+  facebook      String?
+  instagram     String?
+  youtube       String?
+  mapEmbedUrl   String?
+  officeHours   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Konten halaman profil (sambutan, visi misi, tupoksi, nilai pelayanan).
+model Profile {
+  id              Int      @id @default(1)
+  welcomeTitle    String
+  welcomeName     String?
+  welcomePosition String?
+  welcomeText     String
+  vision          String
+  mission         String
+  dutiesFunctions String
+  serviceValues   String
+  updatedAt       DateTime @updatedAt
+}
+
+model Division {
+  id           Int             @id @default(autoincrement())
+  name         String
+  slug         String          @unique
+  abbreviation String?
+  description  String
+  duties       String?
+  icon         String?
+  order        Int             @default(0)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  services     Service[]
+  contacts     ContactPerson[]
+  news         News[]
+}
+
+model Service {
+  id                  Int      @id @default(autoincrement())
+  divisionId          Int
+  name                String
+  slug                String   @unique
+  description         String
+  requirements        String?
+  procedures          String?
+  externalUrl         String?
+  externalButtonLabel String?
+  icon                String?
+  order               Int      @default(0)
+  status              String   @default("active")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  division            Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+}
+
+model ContactPerson {
+  id         Int      @id @default(autoincrement())
+  divisionId Int
+  name       String
+  position   String
+  phone      String
+  whatsapp   String
+  email      String?
+  photo      String?
+  order      Int      @default(0)
+  status     String   @default("active")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  division   Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+}
+
+model News {
+  id          Int       @id @default(autoincrement())
+  divisionId  Int?
+  title       String
+  slug        String    @unique
+  category    String
+  excerpt     String
+  content     String
+  coverImage  String?
+  status      String    @default("draft")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  division    Division? @relation(fields: [divisionId], references: [id], onDelete: SetNull)
+}
+
+model Gallery {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  category    String?
+  imageUrl    String
+  order       Int      @default(0)
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Inquiry {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String?
+  phone      String?
+  divisionId Int?
+  subject    String
+  message    String
+  status     String   @default("new")
+  createdAt  DateTime @default(now())
+}

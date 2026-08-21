@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 text-slate-800;
+}
+
+::selection {
+  @apply bg-primary-200 text-primary-900;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-1 disabled:pointer-events-none disabled:opacity-60;
+  }
+  .btn-icon {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700;
+  }
+  .btn-icon-danger {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-lg border border-red-100 bg-red-50 text-red-600 transition hover:bg-red-100 hover:text-red-700;
+  }
+  .card {
+    @apply rounded-2xl border border-slate-200 bg-white shadow-card;
+  }
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 transition placeholder:text-slate-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-slate-700;
+  }
+}
+
+/* Gaya konten markdown untuk berita dan halaman profil */
+.prose-content {
+  @apply leading-relaxed text-slate-700;
+}
+.prose-content h1,
+.prose-content h2,
+.prose-content h3,
+.prose-content h4 {
+  @apply mb-3 mt-6 font-bold text-slate-900;
+}
+.prose-content h1 {
+  @apply text-2xl;
+}
+.prose-content h2 {
+  @apply text-xl;
+}
+.prose-content h3 {
+  @apply text-lg;
+}
+.prose-content h4 {
+  @apply text-base;
+}
+.prose-content p {
+  @apply my-3;
+}
+.prose-content ul {
+  @apply my-3 list-disc space-y-1.5 pl-6;
+}
+.prose-content ol {
+  @apply my-3 list-decimal space-y-1.5 pl-6;
+}
+.prose-content li::marker {
+  @apply text-primary-600;
+}
+.prose-content a {
+  @apply text-primary-700 underline underline-offset-2 hover:text-primary-800;
+}
+.prose-content blockquote {
+  @apply my-4 rounded-r-lg border-l-4 border-primary-300 bg-primary-50/60 py-1 pl-4 italic text-slate-600;
+}
+.prose-content code {
+  @apply rounded bg-slate-100 px-1.5 py-0.5 text-sm text-primary-800;
+}
+.prose-content pre {
+  @apply my-4 overflow-x-auto rounded-xl bg-slate-900 p-4 text-sm text-slate-100;
+}
+.prose-content pre code {
+  @apply bg-transparent p-0 text-slate-100;
+}
+.prose-content table {
+  @apply my-4 w-full border-collapse text-sm;
+}
+.prose-content th {
+  @apply border border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold;
+}
+.prose-content td {
+  @apply border border-slate-200 px-3 py-2;
+}
+.prose-content img {
+  @apply my-4 max-w-full rounded-xl;
+}
+.prose-content hr {
+  @apply my-6 border-slate-200;
+}

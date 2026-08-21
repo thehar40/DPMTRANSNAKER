@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Placeholder Pembangunan Transmigrasi">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#166534"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <circle cx="400" cy="230" r="110" fill="#ffffff" opacity="0.12"/>
+  <path d="M330 300l25-80h45l25 80z" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+  <rect x="315" y="240" width="170" height="62" rx="8" fill="none" stroke="#ffffff" stroke-width="6"/>
+  <circle cx="350" cy="312" r="14" fill="none" stroke="#fbbf24" stroke-width="5"/>
+  <circle cx="450" cy="312" r="14" fill="none" stroke="#fbbf24" stroke-width="5"/>
+  <text x="400" y="420" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="700" fill="#ffffff">Pembangunan Transmigrasi</text>
+  <text x="400" y="460" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="18" fill="#bbf7d0">Foto placeholder - ganti dengan foto kegiatan</text>
+</svg>

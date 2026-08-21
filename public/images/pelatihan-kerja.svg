@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Placeholder Pelatihan Kerja">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <circle cx="400" cy="230" r="110" fill="#ffffff" opacity="0.12"/>
+  <path d="M400 160l52 28v58c0 34-24 64-52 78-28-14-52-44-52-78v-58z" fill="none" stroke="#fbbf24" stroke-width="6"/>
+  <path d="M400 300l-24-60h48z" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+  <text x="400" y="420" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="700" fill="#ffffff">Pelatihan Kerja</text>
+  <text x="400" y="460" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="18" fill="#99f6e4">Foto placeholder - ganti dengan foto kegiatan</text>
+</svg>

@@ -1,0 +1,13 @@
+File ini hanya penanda (contoh), bukan logo asli.
+
+Cara memasang logo resmi dinas:
+1. Salin file logo resmi milik dinas ke folder public/
+2. Simpan dengan nama salah satu berikut:
+   - public/logo-aceh-utara.png  (disarankan, ukuran 240x240 atau lebih besar, transparan)
+   - atau ganti public/logo-aceh-utara.svg dengan logo resmi format SVG
+
+Website otomatis menampilkan /logo-aceh-utara.png jika tersedia.
+Jika tidak ada atau gagal dimuat, website memakai fallback /logo-aceh-utara.svg.
+
+Catatan: gunakan logo resmi yang memang milik dinas. Logo placeholder bawaan
+bukan logo resmi Kabupaten Aceh Utara.
