@@ -43,7 +43,7 @@ export default async function NewsDetailPage({
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 py-10 text-white">
+      <section className="page-header-grid py-10 text-white">
         <div className="mx-auto max-w-4xl px-4">
           <Breadcrumb light items={[{ label: "Berita", href: "/berita" }, { label: news.category }]} />
           <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -74,7 +74,7 @@ export default async function NewsDetailPage({
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-12">
+      <div className="surface-grid mx-auto max-w-7xl px-4 py-12 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-3">
           <article className="lg:col-span-2">
             <SmartImage
@@ -83,10 +83,10 @@ export default async function NewsDetailPage({
               className="h-64 w-full rounded-2xl sm:h-80"
               iconClassName="h-16 w-16"
             />
-            <p className="mt-6 border-l-4 border-accent-400 bg-accent-50 px-4 py-3 text-sm font-medium italic leading-relaxed text-slate-700">
+            <p className="mt-6 rounded-r-2xl border-l-4 border-accent-400 bg-accent-50 px-5 py-4 text-sm font-medium italic leading-relaxed text-slate-700">
               {news.excerpt}
             </p>
-            <div className="mt-6">
+            <div className="card mt-8 p-6 sm:p-8">
               <Markdown content={news.content} />
             </div>
 

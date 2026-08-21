@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Hero } from "@/components/public/hero";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ServiceCard } from "@/components/public/service-card";
@@ -72,8 +72,40 @@ export default async function HomePage() {
         serviceCount={services.length}
       />
 
+      <section className="relative z-10 mx-auto -mt-8 max-w-7xl px-4" aria-label="Keunggulan layanan">
+        <div className="card grid gap-4 p-4 shadow-xl sm:grid-cols-3 sm:p-5">
+          {[
+            {
+              title: "Informasi terarah",
+              text: "Temukan layanan dan bidang sesuai kebutuhan.",
+              icon: CheckCircle2,
+            },
+            {
+              title: "Panduan praktis",
+              text: "Ikuti tutorial video untuk memahami alur layanan.",
+              icon: ArrowRight,
+            },
+            {
+              title: "Kontak responsif",
+              text: "Hubungi contact person bidang secara langsung.",
+              icon: Phone,
+            },
+          ].map((item) => (
+            <div key={item.title} className="flex items-center gap-3 rounded-xl p-2 sm:p-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-700">
+                <item.icon className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-900">{item.title}</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{item.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Layanan unggulan */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="layanan-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="layanan-heading">
         <SectionHeading
           eyebrow="Layanan Unggulan"
           title="Layanan Kami"
@@ -107,7 +139,7 @@ export default async function HomePage() {
       </section>
 
       {/* Tutorial layanan */}
-      <section className="bg-primary-50/60 py-16 sm:py-20" aria-labelledby="tutorial-heading">
+      <section className="surface-grid bg-primary-50/60 py-16 sm:py-20" aria-labelledby="tutorial-heading">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Panduan Video"
@@ -163,7 +195,7 @@ export default async function HomePage() {
       </section>
 
       {/* Berita terbaru */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="berita-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="berita-heading">
         <SectionHeading
           eyebrow="Informasi Terkini"
           title="Berita & Pengumuman"
@@ -242,7 +274,7 @@ export default async function HomePage() {
       </section>
 
       {/* Kontak cepat */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="kontak-cepat-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="kontak-cepat-heading">
         <SectionHeading
           eyebrow="Hubungi Kami"
           title="Kontak Cepat Bidang"
@@ -272,7 +304,7 @@ export default async function HomePage() {
       </section>
 
       {/* Lokasi dan jam layanan */}
-      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 py-16 text-white">
+      <section className="hero-grid py-16 text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-2">
           <div className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur">
             <h2 className="flex items-center gap-2.5 text-lg font-bold">

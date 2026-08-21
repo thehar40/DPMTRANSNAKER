@@ -32,7 +32,7 @@ export function ContactCard({
     : null;
 
   return (
-    <article className={cn("card flex h-full flex-col", compact ? "p-4" : "p-5")}>
+    <article className={cn("card card-interactive flex h-full flex-col", compact ? "p-4" : "p-5")}>
       <div className="flex items-center gap-3.5">
         <div className="relative">
           {contact.photo ? (

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Save, UploadCloud, X } from "lucide-react";
+import { Eye, EyeOff, PlayCircle, Save, UploadCloud, X } from "lucide-react";
 import { createTutorial, updateTutorial } from "@/lib/actions/tutorials";
 import {
   FieldError,
@@ -14,7 +14,13 @@ import {
   Textarea,
 } from "@/components/ui/fields";
 import { tutorialSchema } from "@/lib/validation";
-import { slugify, toDateTimeLocalValue } from "@/lib/utils";
+import {
+  getVideoEmbedUrl,
+  isDirectVideoUrl,
+  slugify,
+  toDateTimeLocalValue,
+} from "@/lib/utils";
+import { SmartImage } from "@/components/ui/smart-image";
 
 interface TutorialFormProps {
   tutorial?: {
@@ -54,6 +60,7 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   const set = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -306,6 +313,67 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
           onChange={(e) => set("content", e.target.value)}
           placeholder="Tuliskan ringkasan materi, langkah penting, atau catatan video."
         />
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">Preview Tutorial</h3>
+            <p className="mt-1 text-xs text-slate-500">
+              Periksa tampilan judul, thumbnail, dan video sebelum diterbitkan.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setPreview((current) => !current)}
+            className="btn-secondary"
+          >
+            {preview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {preview ? "Tutup Preview" : "Lihat Preview"}
+          </button>
+        </div>
+        {preview ? (
+          <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="relative aspect-video overflow-hidden bg-primary-950">
+              {getVideoEmbedUrl(form.videoUrl) ? (
+                <iframe
+                  src={getVideoEmbedUrl(form.videoUrl) ?? undefined}
+                  title={`Preview ${form.title || "tutorial"}`}
+                  className="h-full w-full"
+                  allowFullScreen
+                />
+              ) : isDirectVideoUrl(form.videoUrl) ? (
+                <video src={form.videoUrl} controls className="h-full w-full" />
+              ) : (
+                <>
+                  <SmartImage
+                    src={form.thumbnailUrl}
+                    alt="Thumbnail preview tutorial"
+                    className="h-full w-full opacity-50"
+                    iconClassName="h-14 w-14 text-primary-200"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-primary-950/55 text-center text-white">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-400 text-primary-950">
+                      <PlayCircle className="h-6 w-6" />
+                    </span>
+                    <p className="mt-3 text-sm font-bold">Video Segera Hadir</p>
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="p-5">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary-600">
+                {form.category || "Kategori tutorial"}
+              </p>
+              <h4 className="mt-1 text-xl font-bold text-slate-900">
+                {form.title || "Judul tutorial"}
+              </h4>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                {form.description || "Deskripsi tutorial akan tampil di sini."}
+              </p>
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div className="grid gap-5 sm:grid-cols-3">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import "@/app/globals.css";
 import {
@@ -9,6 +10,18 @@ import {
 } from "@/lib/constants";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+const headingFont = Manrope({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+const bodyFont = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -36,7 +49,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
-      <body className="font-sans antialiased">
+      <body className={`${bodyFont.variable} ${headingFont.variable} font-sans antialiased`}>
         {children}
         <Toaster richColors position="top-center" />
       </body>

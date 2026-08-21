@@ -78,6 +78,34 @@ export function isDirectVideoUrl(value: string | null | undefined): boolean {
   return isValidExternalUrl(url) && /\.(mp4|webm|ogg|mov)(?:[?#].*)?$/i.test(url);
 }
 
+export function markdownHeadingId(text: string, fallback = "bagian"): string {
+  return slugify(text) || fallback;
+}
+
+export function extractMarkdownHeadings(
+  markdown: string | null | undefined
+): { level: number; text: string; id: string }[] {
+  if (!markdown) return [];
+
+  return markdown
+    .split(/\r?\n/)
+    .map((line, index) => {
+      const match = line.match(/^(#{2,3})\s+(.+?)\s*#*\s*$/);
+      if (!match) return null;
+      const text = match[2]
+        .replace(/[`*_~]/g, "")
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+        .trim();
+      if (!text) return null;
+      return {
+        level: match[1].length,
+        text,
+        id: markdownHeadingId(text, `bagian-${index + 1}`),
+      };
+    })
+    .filter((heading): heading is { level: number; text: string; id: string } => !!heading);
+}
+
 export function isValidMapUrl(url: string | null | undefined): boolean {
   if (!url) return false;
   return isValidExternalUrl(url) && /google\.com\/maps|openstreetmap/i.test(url);

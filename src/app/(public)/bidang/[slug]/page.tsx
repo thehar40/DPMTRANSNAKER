@@ -53,7 +53,7 @@ export default async function DivisionDetailPage({
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 py-10 text-white">
+      <section className="page-header-grid py-10 text-white">
         <div className="mx-auto max-w-7xl px-4">
           <Breadcrumb
             light
@@ -102,7 +102,7 @@ export default async function DivisionDetailPage({
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-14">
+      <div className="surface-grid mx-auto max-w-7xl px-4 py-14">
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-10 lg:col-span-2">
             {division.duties ? (
@@ -114,7 +114,7 @@ export default async function DivisionDetailPage({
                   <Wrench className="h-5 w-5 text-primary-600" />
                   Tugas dan Fungsi
                 </h2>
-                <div className="card mt-4 p-6">
+                <div className="card mt-4 border-l-4 !border-l-primary-500 p-6">
                   <Markdown content={division.duties} />
                 </div>
               </section>

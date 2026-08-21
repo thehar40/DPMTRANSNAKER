@@ -57,7 +57,7 @@ export default async function ServiceDetailPage({
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 py-10 text-white">
+      <section className="page-header-grid py-10 text-white">
         <div className="mx-auto max-w-7xl px-4">
           <Breadcrumb
             light
@@ -121,7 +121,7 @@ export default async function ServiceDetailPage({
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-14">
+      <div className="surface-grid mx-auto max-w-7xl px-4 py-14">
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-10 lg:col-span-2">
             {service.requirements ? (
@@ -133,7 +133,7 @@ export default async function ServiceDetailPage({
                   <ListChecks className="h-5 w-5 text-primary-600" />
                   Persyaratan
                 </h2>
-                <div className="card mt-4 p-6">
+                <div className="card mt-4 border-l-4 !border-l-primary-500 p-6">
                   <Markdown content={service.requirements} />
                 </div>
               </section>
@@ -148,7 +148,7 @@ export default async function ServiceDetailPage({
                   <ClipboardList className="h-5 w-5 text-primary-600" />
                   Prosedur Layanan
                 </h2>
-                <div className="card mt-4 p-6">
+                <div className="card mt-4 border-l-4 !border-l-accent-500 p-6">
                   <Markdown content={service.procedures} />
                 </div>
               </section>

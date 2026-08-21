@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 interface PageHeaderProps {
@@ -16,7 +15,7 @@ export function PageHeader({ title, description, breadcrumbs }: PageHeaderProps)
       />
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:py-16">
         <Breadcrumb items={breadcrumbs} light />
-        <h1 className="mt-4 text-2xl font-extrabold sm:text-3xl lg:text-4xl">
+        <h1 className="text-balance mt-4 text-2xl font-extrabold sm:text-3xl lg:text-4xl">
           {title}
         </h1>
         {description ? (

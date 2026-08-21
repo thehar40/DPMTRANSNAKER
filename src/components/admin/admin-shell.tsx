@@ -43,16 +43,14 @@ function SidebarContent({
   onNavigate?: () => void;
 }) {
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-gradient-to-b from-primary-950 via-primary-950 to-slate-950">
       <div className="border-b border-white/10 px-5 py-5">
         <Logo
           light
-          showText={false}
           imageClassName="h-12 w-12"
-          shortName=""
+          shortName="DPMTRANSNAKER"
+          subtitle="Panel Pengelola Konten"
         />
-        <p className="mt-3 text-sm font-bold text-white">Panel Admin</p>
-        <p className="text-xs text-white/50">DPMPTTK Aceh Utara</p>
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Menu admin">
         {NAV_ITEMS.map((item) => {
@@ -63,9 +61,9 @@ function SidebarContent({
               href={item.href}
               onClick={onNavigate}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
                 active
-                  ? "bg-accent-500 text-primary-950"
+                  ? "bg-accent-400 font-bold text-primary-950 shadow-lg shadow-accent-500/10"
                   : "text-white/70 hover:bg-white/10 hover:text-white"
               )}
             >
@@ -114,7 +112,7 @@ export function AdminShell({
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-100 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.08),transparent_24rem)]">
       {/* Sidebar desktop */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 bg-primary-950 lg:block">
         <SidebarContent pathname={pathname} />
@@ -142,7 +140,7 @@ export function AdminShell({
       ) : null}
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+        <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/90 shadow-sm backdrop-blur-xl">
           <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6">
             <div className="flex items-center gap-3">
               <button
@@ -163,7 +161,7 @@ export function AdminShell({
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden text-right sm:block">
+              <div className="hidden rounded-xl bg-slate-50 px-3 py-1.5 text-right sm:block">
                 <p className="text-sm font-semibold text-slate-800">
                   {sessionName}
                 </p>

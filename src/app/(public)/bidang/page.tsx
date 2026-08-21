@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Building2, Layers, Users } from "lucide-react";
 import { PageHeader } from "@/components/public/page-header";
 import { DivisionCard } from "@/components/public/division-card";
 import { EmptyState } from "@/components/ui/empty-state";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { StatCard } from "@/components/ui/stat-card";
 import { getActiveContacts, getDivisions } from "@/lib/data";
 
 export const revalidate = 60;
@@ -22,6 +24,14 @@ export default async function DivisionsPage() {
 
   const whatsappOf = (divisionId: number) =>
     contacts.find((c) => c.divisionId === divisionId)?.whatsapp ?? null;
+  const serviceCount = divisions.reduce(
+    (total, division) => total + division._count.services,
+    0
+  );
+  const contactCount = divisions.reduce(
+    (total, division) => total + division._count.contacts,
+    0
+  );
 
   return (
     <div>
@@ -31,7 +41,36 @@ export default async function DivisionsPage() {
         breadcrumbs={[{ label: "Bidang & Layanan" }]}
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-16">
+      <section className="relative z-10 mx-auto -mt-7 max-w-7xl px-4">
+        <div className="grid gap-4 sm:grid-cols-3">
+          <StatCard
+            icon={Building2}
+            value={divisions.length}
+            label="Bidang & unit kerja"
+            description="Struktur layanan dinas."
+          />
+          <StatCard
+            icon={Layers}
+            value={serviceCount}
+            label="Layanan bidang"
+            description="Layanan aktif yang tersedia."
+          />
+          <StatCard
+            icon={Users}
+            value={contactCount}
+            label="Contact person"
+            description="Petugas yang dapat dihubungi."
+          />
+        </div>
+      </section>
+
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <SectionHeading
+          align="left"
+          eyebrow="Struktur Organisasi"
+          title="Kenali bidang dan unit kerja kami"
+          description="Setiap bidang memiliki fokus layanan dan contact person yang dapat membantu kebutuhan masyarakat."
+        />
         {divisions.length === 0 ? (
           <EmptyState
             title="Belum ada bidang"

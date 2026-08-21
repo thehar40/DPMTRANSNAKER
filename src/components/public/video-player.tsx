@@ -60,7 +60,7 @@ export function VideoPlayer({
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-400 text-primary-950">
           {thumbnailUrl ? <PlayCircle className="h-7 w-7" /> : <Film className="h-7 w-7" />}
         </span>
-        <p className="mt-4 text-base font-bold">Video belum tersedia</p>
+        <p className="mt-4 text-base font-bold">Video Segera Hadir</p>
         <p className="mt-1 max-w-sm text-sm text-white/70">
           Admin dapat mengunggah video tutorial melalui panel admin.
         </p>

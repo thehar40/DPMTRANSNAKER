@@ -25,18 +25,19 @@ export function ServiceCard({ service, whatsapp }: ServiceCardProps) {
     : null;
 
   return (
-    <article className="card card-interactive group flex h-full flex-col p-6">
-      <IconBadge name={service.icon} />
+    <article className="card card-interactive group relative flex h-full flex-col overflow-hidden p-6">
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary-700 via-primary-400 to-accent-400" />
+      <IconBadge name={service.icon} className="h-14 w-14 rounded-2xl" iconClassName="h-7 w-7" />
       {service.division ? (
         <Link
           href={`/bidang/${service.division.slug}`}
-          className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-primary-700 hover:text-primary-800"
+          className="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full bg-primary-50 px-2.5 py-1 text-xs font-semibold text-primary-700 transition hover:bg-primary-100 hover:text-primary-800"
         >
           <Building2 className="h-3.5 w-3.5" />
           {service.division.name}
         </Link>
       ) : null}
-      <h3 className="mt-1.5 text-base font-bold text-slate-900">
+      <h3 className="mt-3 text-lg font-bold leading-snug text-slate-900">
         <Link
           href={`/layanan/${service.slug}`}
           className="transition group-hover:text-primary-700"
@@ -47,7 +48,7 @@ export function ServiceCard({ service, whatsapp }: ServiceCardProps) {
       <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
         {truncate(service.description, 120)}
       </p>
-      <div className="mt-5 flex items-center justify-between">
+      <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
         <Link
           href={`/layanan/${service.slug}`}
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-700 transition hover:text-primary-800"
@@ -61,7 +62,7 @@ export function ServiceCard({ service, whatsapp }: ServiceCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Hubungi WhatsApp untuk layanan ${service.name}`}
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-50 text-green-600 transition hover:bg-green-500 hover:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-50 text-green-600 transition hover:bg-green-500 hover:text-white"
           >
             <MessageCircle className="h-4 w-4" />
           </a>

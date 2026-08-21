@@ -36,7 +36,7 @@ export async function Footer() {
   ].filter((s) => hasValue(s.href));
 
   return (
-    <footer className="bg-primary-950 text-white/80">
+    <footer className="border-t-4 border-accent-500/70 bg-primary-950 text-white/80">
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>

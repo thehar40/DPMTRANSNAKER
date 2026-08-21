@@ -20,23 +20,33 @@ export default async function AdminTutorialsPage() {
       orderBy: [{ order: "asc" }, { updatedAt: "desc" }, { id: "desc" }],
     })
     .catch(() => []);
+  const publishedCount = tutorials.filter((tutorial) => tutorial.status === "published").length;
+  const videoCount = tutorials.filter((tutorial) => !!tutorial.videoUrl).length;
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">Kelola Tutorial</h2>
+          <p className="section-kicker">Video Center</p>
+          <h2 className="mt-2 text-xl font-bold text-slate-900">Kelola Tutorial</h2>
           <p className="text-sm text-slate-500">
             Kelola video panduan OSS, LKPM Online, AK1, dan layanan lainnya.
           </p>
         </div>
-        <Link href="/admin/tutorials/new" className="btn-primary">
-          <Plus className="h-4 w-4" />
-          Tambah Tutorial
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="hidden items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs sm:flex">
+            <span className="font-semibold text-slate-500">{publishedCount} terbit</span>
+            <span className="h-4 w-px bg-slate-200" />
+            <span className="font-semibold text-primary-700">{videoCount} memiliki video</span>
+          </div>
+          <Link href="/admin/tutorials/new" className="btn-primary">
+            <Plus className="h-4 w-4" />
+            Tambah Tutorial
+          </Link>
+        </div>
       </div>
 
-      <div className="card overflow-hidden">
+      <div className="card overflow-hidden shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[820px] text-left text-sm">
             <thead className="border-b border-slate-100 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">

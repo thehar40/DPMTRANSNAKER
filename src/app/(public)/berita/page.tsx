@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/public/page-header";
 import { NewsCard } from "@/components/public/news-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PaginationNav } from "@/components/ui/breadcrumb";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { getPublishedNews } from "@/lib/data";
 import { NEWS_CATEGORIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -62,8 +63,15 @@ export default async function NewsPage({
         breadcrumbs={[{ label: "Berita" }]}
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-12">
-        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-12 sm:py-16">
+        <div className="mb-8">
+          <SectionHeading
+            align="left"
+            eyebrow="Pusat Informasi"
+            title="Informasi terkini untuk masyarakat"
+            description="Temukan berita, pengumuman, dan informasi layanan yang dipublikasikan oleh dinas."
+          />
+          <div className="card flex flex-col gap-4 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-2">
             <a
               href={buildCategoryHref("")}
@@ -92,7 +100,7 @@ export default async function NewsPage({
             ))}
           </div>
 
-          <form action="/berita" method="get" className="flex gap-2">
+          <form action="/berita" method="get" className="flex w-full min-w-0 gap-2 lg:max-w-sm">
             {category ? (
               <input type="hidden" name="category" value={category} />
             ) : null}
@@ -114,6 +122,7 @@ export default async function NewsPage({
               Cari
             </button>
           </form>
+          </div>
         </div>
 
         {items.length === 0 ? (

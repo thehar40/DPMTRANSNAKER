@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CheckCircle2, Quote, Target, ClipboardList, Award } from "lucide-react";
+import { CheckCircle2, Quote, Target, ClipboardList } from "lucide-react";
 import { PageHeader } from "@/components/public/page-header";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { DivisionCard } from "@/components/public/division-card";
@@ -43,9 +43,9 @@ export default async function ProfilPage() {
 
       {/* Sambutan kepala dinas */}
       <section className="mx-auto max-w-7xl px-4 py-16">
-        <div className="card overflow-hidden">
+        <div className="card overflow-hidden shadow-xl">
           <div className="grid lg:grid-cols-[1fr_2fr]">
-            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-primary-700 to-primary-900 p-8 text-center text-white">
+            <div className="hero-grid flex flex-col items-center justify-center p-8 text-center text-white">
               <div className="flex h-28 w-28 items-center justify-center rounded-full bg-white/15 text-3xl font-bold ring-4 ring-accent-400/60">
                 {(welcomeName ?? "KD").slice(0, 2).toUpperCase()}
               </div>
@@ -112,7 +112,7 @@ export default async function ProfilPage() {
       </section>
 
       {/* Tupoksi */}
-      <section className="mx-auto max-w-7xl px-4 py-16">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16">
         <SectionHeading
           eyebrow="Landasan Kerja"
           title="Tugas Pokok dan Fungsi"
@@ -168,7 +168,7 @@ export default async function ProfilPage() {
       </section>
 
       {/* Nilai pelayanan */}
-      <section className="mx-auto max-w-7xl px-4 py-16">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16">
         <SectionHeading
           eyebrow="Komitmen Kami"
           title="Nilai Pelayanan"

@@ -39,7 +39,7 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur transition-shadow",
+        "sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl transition-shadow",
         scrolled && "shadow-sm"
       )}
     >
@@ -58,9 +58,9 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "relative rounded-lg px-3 py-2 text-sm font-semibold transition",
+                "relative rounded-xl px-3 py-2 text-sm font-semibold transition",
                 isActive(item.href)
-                  ? "text-primary-700"
+                  ? "bg-primary-50/80 text-primary-700"
                   : "text-slate-600 hover:bg-slate-50 hover:text-primary-700"
               )}
             >

@@ -38,9 +38,9 @@ export default async function ContactPage() {
       />
 
       {/* Informasi kontak */}
-      <section className="mx-auto max-w-7xl px-4 py-12">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-12 sm:py-16">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="card p-6">
+          <div className="card card-interactive p-6">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 text-primary-700 ring-1 ring-primary-100">
               <MapPin className="h-5 w-5" />
             </div>
@@ -49,7 +49,7 @@ export default async function ContactPage() {
               {settings.address}
             </p>
           </div>
-          <div className="card p-6">
+          <div className="card card-interactive p-6">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 text-primary-700 ring-1 ring-primary-100">
               <Phone className="h-5 w-5" />
             </div>
@@ -60,7 +60,7 @@ export default async function ContactPage() {
                 : "Nomor telepon belum diatur."}
             </p>
           </div>
-          <div className="card p-6">
+          <div className="card card-interactive p-6">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 text-primary-700 ring-1 ring-primary-100">
               <Mail className="h-5 w-5" />
             </div>
@@ -71,7 +71,7 @@ export default async function ContactPage() {
                 : "Email belum diatur."}
             </p>
           </div>
-          <div className="card p-6">
+          <div className="card card-interactive p-6">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 text-primary-700 ring-1 ring-primary-100">
               <Clock className="h-5 w-5" />
             </div>
@@ -84,7 +84,7 @@ export default async function ContactPage() {
       </section>
 
       {/* Peta + form */}
-      <section className="bg-white py-14">
+      <section className="bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-2">
           <div>
             <h2 className="text-xl font-bold text-slate-900">Lokasi Kantor</h2>
@@ -122,7 +122,7 @@ export default async function ContactPage() {
               Isi formulir di bawah ini. Pesan Anda akan masuk ke panel admin
               dan ditindaklanjuti petugas.
             </p>
-            <div className="card mt-5 p-6">
+            <div className="card mt-5 border-t-4 !border-t-primary-500 p-6 shadow-lg">
               <ContactForm
                 divisions={divisions.map((d) => ({ id: d.id, name: d.name }))}
               />

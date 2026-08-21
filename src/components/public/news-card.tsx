@@ -41,7 +41,8 @@ export function NewsCard({ news }: NewsCardProps) {
         <SmartImage
           src={news.coverImage}
           alt={news.title}
-          className="h-44 w-full"
+          className="h-48 w-full"
+          imgClassName="transition duration-500 group-hover:scale-105"
           iconClassName="h-12 w-12"
         />
         <Badge
@@ -51,12 +52,12 @@ export function NewsCard({ news }: NewsCardProps) {
               NEWS_CATEGORY_STYLES.Umum)
           }
         >
-          <Icon className="h-3 w-3" />
+          <Icon className="h-3.5 w-3.5" />
           {news.category}
         </Badge>
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
         <p className="flex items-center gap-1.5 text-xs text-slate-400">
           <CalendarDays className="h-3.5 w-3.5" />
           {formatDate(news.publishedAt)}
@@ -67,7 +68,7 @@ export function NewsCard({ news }: NewsCardProps) {
             </>
           ) : null}
         </p>
-        <h3 className="mt-2 text-base font-bold leading-snug text-slate-900">
+        <h3 className="mt-2 text-lg font-bold leading-snug text-slate-900">
           <Link
             href={`/berita/${news.slug}`}
             className="line-clamp-2 transition group-hover:text-primary-700"

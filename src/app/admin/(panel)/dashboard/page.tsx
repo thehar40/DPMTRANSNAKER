@@ -75,7 +75,8 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-lg font-bold text-slate-900">Dashboard</h2>
+        <p className="section-kicker">Overview</p>
+        <h2 className="mt-2 text-xl font-bold text-slate-900">Dashboard</h2>
         <p className="text-sm text-slate-500">
           Ringkasan konten website Dinas Penanaman Modal, Transmigrasi dan
           Tenaga Kerja Kabupaten Aceh Utara.
@@ -87,7 +88,7 @@ export default async function AdminDashboardPage() {
           <Link
             key={stat.label}
             href={stat.href}
-            className="card flex items-center gap-4 p-5 transition hover:-translate-y-0.5 hover:shadow-lg"
+            className="card card-interactive flex items-center gap-4 p-5"
           >
             <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.color}`}>
               <stat.icon className="h-6 w-6" />
