@@ -34,3 +34,5 @@ prisma/*.db-journal
 # Video tutorial hasil upload admin (simpan file asli di storage/backup terpisah)
 public/uploads/tutorials/*
 !public/uploads/tutorials/.gitkeep
+public/uploads/news/*
+!public/uploads/news/.gitkeep

@@ -9,6 +9,7 @@ import { NewsCard } from "@/components/public/news-card";
 import { TutorialCard } from "@/components/public/tutorial-card";
 import { ContactCard } from "@/components/public/contact-card";
 import { SmartImage } from "@/components/ui/smart-image";
+import { MapPreview } from "@/components/public/map-preview";
 import { EmptyState } from "@/components/ui/empty-state";
 import {
   getActiveContacts,
@@ -314,25 +315,8 @@ export default async function HomePage() {
             <p className="mt-3 text-sm leading-relaxed text-white/85">
               {settings.address}
             </p>
-            <div className="mt-5 overflow-hidden rounded-xl border border-white/15">
-              {settings.mapEmbedUrl && hasValue(settings.mapEmbedUrl) ? (
-                <iframe
-                  src={settings.mapEmbedUrl}
-                  title="Peta lokasi kantor dinas"
-                  className="h-64 w-full"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
-              ) : (
-                <div className="flex h-64 w-full flex-col items-center justify-center bg-primary-950/50 text-center">
-                  <MapPin className="h-10 w-10 text-accent-300/60" />
-                  <p className="mt-3 max-w-xs text-sm text-white/60">
-                    Peta akan tampil setelah link embed Google Maps diisi pada
-                    menu Pengaturan panel admin.
-                  </p>
-                </div>
-              )}
+            <div className="mt-5">
+              <MapPreview url={settings.mapEmbedUrl} location={settings.address} dark />
             </div>
           </div>
 

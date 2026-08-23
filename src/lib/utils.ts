@@ -107,8 +107,31 @@ export function extractMarkdownHeadings(
 }
 
 export function isValidMapUrl(url: string | null | undefined): boolean {
-  if (!url) return false;
-  return isValidExternalUrl(url) && /google\.com\/maps|openstreetmap/i.test(url);
+  return !!getMapEmbedUrl(url);
+}
+
+export function getMapEmbedUrl(url: string | null | undefined): string | null {
+  if (!url || !isValidExternalUrl(url)) return null;
+
+  try {
+    const parsed = new URL(url.trim());
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+
+    // maps.app.goo.gl is a share/redirect URL and cannot be rendered in an iframe.
+    if (host === "maps.app.goo.gl" || host === "goo.gl" || host === "g.page") {
+      return null;
+    }
+
+    const isGoogleEmbed =
+      (host === "google.com" || host.endsWith(".google.com") || host === "maps.google.com") &&
+      (parsed.pathname.includes("/maps/embed") || parsed.searchParams.get("output") === "embed");
+    const isOpenStreetMapEmbed =
+      host.includes("openstreetmap.org") && parsed.pathname.includes("/export/embed.html");
+
+    return isGoogleEmbed || isOpenStreetMapEmbed ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
 }
 
 export function hasValue(value: string | null | undefined): boolean {

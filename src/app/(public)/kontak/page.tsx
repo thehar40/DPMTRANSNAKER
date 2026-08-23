@@ -3,6 +3,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { PageHeader } from "@/components/public/page-header";
 import { ContactForm } from "@/components/public/contact-form";
 import { ContactCard } from "@/components/public/contact-card";
+import { MapPreview } from "@/components/public/map-preview";
 import { EmptyState } from "@/components/ui/empty-state";
 import { getActiveContacts, getDivisions, getSettings } from "@/lib/data";
 import { hasValue } from "@/lib/utils";
@@ -92,25 +93,12 @@ export default async function ContactPage() {
               Kunjungi kantor kami pada jam layanan. Anda juga dapat melihat
               peta lokasi di bawah ini.
             </p>
-            <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200">
-              {settings.mapEmbedUrl && hasValue(settings.mapEmbedUrl) ? (
-                <iframe
-                  src={settings.mapEmbedUrl}
-                  title="Peta lokasi kantor dinas"
-                  className="h-80 w-full"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
-              ) : (
-                <div className="flex h-80 w-full flex-col items-center justify-center bg-slate-100 text-center">
-                  <MapPin className="h-10 w-10 text-slate-300" />
-                  <p className="mt-3 max-w-xs text-sm text-slate-500">
-                    Peta akan tampil setelah link embed Google Maps diisi pada
-                    menu Pengaturan panel admin.
-                  </p>
-                </div>
-              )}
+            <div className="mt-5">
+              <MapPreview
+                url={settings.mapEmbedUrl}
+                location={settings.address}
+                heightClass="h-80"
+              />
             </div>
           </div>
 

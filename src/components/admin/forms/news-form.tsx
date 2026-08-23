@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Save } from "lucide-react";
+import { Save, UploadCloud, X } from "lucide-react";
 import { createNews, updateNews } from "@/lib/actions/news";
 import {
   FieldError,
@@ -16,6 +16,7 @@ import {
 import { newsSchema } from "@/lib/validation";
 import { NEWS_CATEGORIES } from "@/lib/constants";
 import { slugify, toDateTimeLocalValue } from "@/lib/utils";
+import { uploadPublicFile } from "@/lib/upload-client";
 
 interface NewsFormProps {
   divisions: { id: number; name: string }[];
@@ -51,6 +52,8 @@ export function NewsForm({ divisions, news }: NewsFormProps) {
   const [slugTouched, setSlugTouched] = useState(isEdit);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [selectedCoverFile, setSelectedCoverFile] = useState<File | null>(null);
+  const [coverUploading, setCoverUploading] = useState(false);
 
   const set = (key: keyof typeof form, value: string) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -66,6 +69,29 @@ export function NewsForm({ divisions, news }: NewsFormProps) {
     setErrors((e) => ({ ...e, title: "" }));
   };
 
+  async function uploadCoverFile(file: File): Promise<string | null> {
+    try {
+      return await uploadPublicFile(file, "image");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Gambar gagal diunggah."
+      );
+      return null;
+    }
+  }
+
+  async function handleCoverUpload() {
+    if (!selectedCoverFile) return;
+    setCoverUploading(true);
+    const url = await uploadCoverFile(selectedCoverFile);
+    if (url) {
+      set("coverImage", url);
+      setSelectedCoverFile(null);
+      toast.success("Gambar berhasil diunggah. Jangan lupa simpan berita.");
+    }
+    setCoverUploading(false);
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const parsed = newsSchema.safeParse(form);
@@ -80,9 +106,18 @@ export function NewsForm({ divisions, news }: NewsFormProps) {
       return;
     }
     setLoading(true);
+    let coverImage = form.coverImage;
+    if (selectedCoverFile) {
+      const uploadedUrl = await uploadCoverFile(selectedCoverFile);
+      if (!uploadedUrl) {
+        setLoading(false);
+        return;
+      }
+      coverImage = uploadedUrl;
+    }
     const fd = new FormData();
     if (news) fd.set("id", String(news.id));
-    for (const [key, value] of Object.entries(parsed.data)) {
+    for (const [key, value] of Object.entries({ ...parsed.data, coverImage })) {
       if (value === undefined || value === null) continue;
       if (value instanceof Date) fd.set(key, value.toISOString());
       else fd.set(key, String(value));
@@ -164,16 +199,52 @@ export function NewsForm({ divisions, news }: NewsFormProps) {
             ))}
           </Select>
         </div>
-        <div>
-          <Label htmlFor="coverImage" hint="URL gambar, opsional">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+          <Label htmlFor="coverImageFile" hint="Pilih dari PC atau gunakan URL di bawah">
             Gambar Cover
           </Label>
-          <Input
-            id="coverImage"
-            value={form.coverImage}
-            onChange={(e) => set("coverImage", e.target.value)}
-            placeholder="/images/berita.jpg"
-          />
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Input
+              id="coverImageFile"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onChange={(e) => setSelectedCoverFile(e.target.files?.[0] ?? null)}
+              className="cursor-pointer file:mr-3 file:rounded-md file:border-0 file:bg-primary-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-primary-800"
+            />
+            <button
+              type="button"
+              onClick={handleCoverUpload}
+              disabled={!selectedCoverFile || coverUploading || loading}
+              className="btn-secondary whitespace-nowrap"
+            >
+              <UploadCloud className="h-4 w-4" />
+              {coverUploading ? "Mengunggah..." : "Unggah"}
+            </button>
+          </div>
+          {selectedCoverFile ? (
+            <div className="mt-2 flex items-center gap-2 text-xs text-primary-700">
+              <span className="truncate">{selectedCoverFile.name}</span>
+              <button
+                type="button"
+                onClick={() => setSelectedCoverFile(null)}
+                className="rounded p-0.5 hover:bg-primary-100"
+                aria-label="Hapus pilihan gambar"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ) : null}
+          <div className="mt-3 border-t border-slate-200 pt-3">
+            <Label htmlFor="coverImage" hint="Atau masukkan URL gambar">
+              URL Gambar
+            </Label>
+            <Input
+              id="coverImage"
+              value={form.coverImage}
+              onChange={(e) => set("coverImage", e.target.value)}
+              placeholder="https://... atau /uploads/news/berita.jpg"
+            />
+          </div>
         </div>
       </div>
 

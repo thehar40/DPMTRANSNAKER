@@ -6,13 +6,13 @@ import { getSession } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
-const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
-const ALLOWED_EXTENSIONS = new Set([".mp4", ".webm", ".ogg", ".mov"]);
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
+const ALLOWED_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 const ALLOWED_TYPES = new Set([
-  "video/mp4",
-  "video/webm",
-  "video/ogg",
-  "video/quicktime",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
 ]);
 
 export async function POST(request: Request) {
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Upload lokal tidak tersedia di Vercel. Aktifkan Vercel Blob Storage atau gunakan URL video YouTube/Vimeo/MP4.",
+          "Upload lokal tidak tersedia di Vercel. Aktifkan Vercel Blob Storage atau gunakan URL gambar.",
       },
       { status: 503 }
     );
@@ -34,24 +34,15 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file");
-
     if (!(file instanceof File)) {
-      return NextResponse.json(
-        { error: "File video belum dipilih." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "File gambar belum dipilih." }, { status: 400 });
     }
-
     if (file.size === 0) {
-      return NextResponse.json(
-        { error: "File video kosong atau tidak dapat dibaca." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "File gambar kosong." }, { status: 400 });
     }
-
-    if (file.size > MAX_VIDEO_SIZE) {
+    if (file.size > MAX_IMAGE_SIZE) {
       return NextResponse.json(
-        { error: "Ukuran video maksimal 100 MB." },
+        { error: "Ukuran gambar maksimal 8 MB." },
         { status: 400 }
       );
     }
@@ -59,34 +50,26 @@ export async function POST(request: Request) {
     const extension = path.extname(file.name).toLowerCase();
     if (!ALLOWED_EXTENSIONS.has(extension) || (file.type && !ALLOWED_TYPES.has(file.type))) {
       return NextResponse.json(
-        { error: "Format video yang didukung: MP4, WebM, OGG, atau MOV." },
+        { error: "Format gambar yang didukung: JPG, PNG, WebP, atau GIF." },
         { status: 400 }
       );
     }
 
-    const uploadDirectory = path.join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "tutorials"
-    );
-    await mkdir(uploadDirectory, { recursive: true });
-
+    const directory = path.join(process.cwd(), "public", "uploads", "news");
+    await mkdir(directory, { recursive: true });
     const fileName = `${randomUUID()}${extension}`;
-    const filePath = path.join(uploadDirectory, fileName);
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filePath, buffer);
+    await writeFile(path.join(directory, fileName), Buffer.from(await file.arrayBuffer()));
 
     return NextResponse.json({
       ok: true,
-      url: `/uploads/tutorials/${fileName}`,
+      url: `/uploads/news/${fileName}`,
       name: file.name,
       size: file.size,
     });
   } catch (error) {
-    console.error("Tutorial upload error:", error);
+    console.error("News image upload error:", error);
     return NextResponse.json(
-      { error: "Video gagal diunggah. Silakan coba lagi." },
+      { error: "Gambar gagal diunggah. Silakan coba lagi." },
       { status: 500 }
     );
   }

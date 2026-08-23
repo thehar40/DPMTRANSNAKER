@@ -214,7 +214,7 @@ export function SettingsForm({ initial }: SettingsFormProps) {
           <FieldError>{errors.officeHours}</FieldError>
         </div>
         <div>
-          <Label htmlFor="mapEmbedUrl" hint="Link embed Google Maps">
+          <Label htmlFor="mapEmbedUrl" hint="Gunakan URL Embed, bukan maps.app.goo.gl">
             Peta (Embed URL)
           </Label>
           <Input
@@ -223,6 +223,11 @@ export function SettingsForm({ initial }: SettingsFormProps) {
             onChange={(e) => set("mapEmbedUrl", e.target.value)}
             placeholder="https://www.google.com/maps/embed?..."
           />
+          <p className="mt-1.5 text-xs leading-relaxed text-slate-400">
+            Google Maps: pilih Bagikan &rarr; Sematkan peta &rarr; salin URL
+            pada atribut <code className="rounded bg-slate-100 px-1">src</code>.
+            Link pendek <code className="rounded bg-slate-100 px-1">maps.app.goo.gl</code> hanya dipakai untuk tombol buka lokasi.
+          </p>
         </div>
       </div>
 

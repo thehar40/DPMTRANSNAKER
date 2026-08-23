@@ -21,6 +21,7 @@ import {
   toDateTimeLocalValue,
 } from "@/lib/utils";
 import { SmartImage } from "@/components/ui/smart-image";
+import { uploadPublicFile } from "@/lib/upload-client";
 
 interface TutorialFormProps {
   tutorial?: {
@@ -77,18 +78,14 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
   };
 
   async function uploadSelectedFile(file: File): Promise<string | null> {
-    const uploadData = new FormData();
-    uploadData.set("file", file);
-    const response = await fetch("/api/admin/tutorials/upload", {
-      method: "POST",
-      body: uploadData,
-    });
-    const body = await response.json().catch(() => ({}));
-    if (!response.ok || !body.url) {
-      toast.error(body.error ?? "Video gagal diunggah.");
+    try {
+      return await uploadPublicFile(file, "video");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Video gagal diunggah."
+      );
       return null;
     }
-    return String(body.url);
   }
 
   async function handleUploadClick() {
@@ -223,6 +220,8 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
               Pilih file video maksimal 100 MB, atau masukkan URL YouTube,
               Vimeo, atau MP4. File upload lokal tersimpan di
               <code className="ml-1 rounded bg-white px-1 py-0.5 text-primary-700">public/uploads/tutorials</code>.
+              Pada Vercel, aktifkan Vercel Blob Storage agar upload langsung
+              dari PC tersimpan permanen.
             </p>
           </div>
           <UploadCloud className="h-5 w-5 shrink-0 text-primary-600" />
