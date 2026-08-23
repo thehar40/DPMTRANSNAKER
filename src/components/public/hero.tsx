@@ -25,7 +25,7 @@ export function Hero({ tagline, divisionCount, serviceCount }: HeroProps) {
         className="pointer-events-none absolute right-10 top-10 hidden h-40 w-40 rounded-full border border-white/10 lg:block"
       />
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:py-24">
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:py-12 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:py-14">
         <div>
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent-400/40 bg-accent-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent-200">
             <ClipboardList className="h-3.5 w-3.5" />
@@ -45,13 +45,13 @@ export function Hero({ tagline, divisionCount, serviceCount }: HeroProps) {
             </Link>
             <Link
               href="/kontak"
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/30 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/16"
             >
               <PhoneCall className="h-4 w-4" />
               Hubungi Kami
             </Link>
           </div>
-          <div className="mt-10 grid max-w-md grid-cols-3 gap-3">
+          <div className="mt-4 grid max-w-md grid-cols-3 gap-3">
             {[
               { value: divisionCount, label: "Bidang & Unit" },
               { value: serviceCount, label: "Layanan" },

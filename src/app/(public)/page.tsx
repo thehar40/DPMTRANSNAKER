@@ -78,7 +78,7 @@ export default async function HomePage() {
 
       <InfoTicker coordinates={coordinates} />
 
-      <section className="relative z-10 mx-auto max-w-7xl px-4 pt-8" aria-label="Keunggulan layanan">
+      <section className="relative z-10 mx-auto max-w-7xl px-4 pt-6" aria-label="Keunggulan layanan">
         <div className="card grid gap-4 p-4 shadow-xl sm:grid-cols-3 sm:p-5">
           {[
             {
@@ -111,7 +111,7 @@ export default async function HomePage() {
       </section>
 
       {/* Informasi terkini: Berita di kiri, Galeri di kanan */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-14 sm:py-16" aria-labelledby="informasi-terkini-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10" aria-labelledby="informasi-terkini-heading">
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
             <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
@@ -162,7 +162,7 @@ export default async function HomePage() {
       </section>
 
       {/* Panduan video - Tutorial layanan */}
-      <section className="surface-grid bg-primary-50/60 py-16 sm:py-20" aria-labelledby="tutorial-heading">
+      <section className="surface-grid bg-primary-50/60 py-8 sm:py-10" aria-labelledby="tutorial-heading">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Panduan Video"
@@ -191,7 +191,7 @@ export default async function HomePage() {
       </section>
 
       {/* Layanan unggulan */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="layanan-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-10 sm:py-12" aria-labelledby="layanan-heading">
         <SectionHeading
           eyebrow="Layanan Unggulan"
           title="Layanan Kami"
@@ -225,7 +225,7 @@ export default async function HomePage() {
       </section>
 
       {/* Bidang dinas */}
-      <section className="bg-white py-16 sm:py-20" aria-labelledby="bidang-heading">
+      <section className="bg-white py-8 sm:py-10" aria-labelledby="bidang-heading">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Struktur Dinas"
@@ -252,7 +252,7 @@ export default async function HomePage() {
       </section>
 
       {/* Kontak cepat */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="kontak-cepat-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10" aria-labelledby="kontak-cepat-heading">
         <SectionHeading
           eyebrow="Hubungi Kami"
           title="Kontak Cepat Bidang"
@@ -282,7 +282,7 @@ export default async function HomePage() {
       </section>
 
       {/* Lokasi dan jam layanan */}
-      <section className="hero-grid py-16 text-white">
+      <section className="hero-grid py-10 text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-2">
           <div className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur">
             <h2 className="flex items-center gap-2.5 text-lg font-bold">
