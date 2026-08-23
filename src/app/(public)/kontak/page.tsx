@@ -6,6 +6,7 @@ import { ContactCard } from "@/components/public/contact-card";
 import { MapPreview } from "@/components/public/map-preview";
 import { EmptyState } from "@/components/ui/empty-state";
 import { getActiveContacts, getDivisions, getSettings } from "@/lib/data";
+import { getMapCoordinates } from "@/lib/map-coords";
 import { hasValue } from "@/lib/utils";
 
 export const revalidate = 60;
@@ -29,6 +30,8 @@ export default async function ContactPage() {
       contacts: contacts.filter((c) => c.divisionId === division.id),
     }))
     .filter((group) => group.contacts.length > 0);
+
+  const coordinates = await getMapCoordinates(settings.mapEmbedUrl);
 
   return (
     <div>
@@ -97,6 +100,7 @@ export default async function ContactPage() {
               <MapPreview
                 url={settings.mapEmbedUrl}
                 location={settings.address}
+                coordinates={coordinates}
                 heightClass="h-80"
               />
             </div>

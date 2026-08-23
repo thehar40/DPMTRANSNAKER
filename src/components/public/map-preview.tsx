@@ -4,6 +4,7 @@ import { getMapEmbedUrl, hasValue, isValidExternalUrl } from "@/lib/utils";
 interface MapPreviewProps {
   url: string | null;
   location?: string | null;
+  coordinates?: { lat: number; lon: number } | null;
   heightClass?: "h-64" | "h-80";
   dark?: boolean;
 }
@@ -11,16 +12,21 @@ interface MapPreviewProps {
 export function MapPreview({
   url,
   location,
+  coordinates,
   heightClass = "h-64",
   dark = false,
 }: MapPreviewProps) {
   const embedUrl = getMapEmbedUrl(url);
   const shareUrl = hasValue(url) && isValidExternalUrl(url) ? url!.trim() : null;
+  const coordinatesEmbedUrl =
+    !embedUrl && coordinates
+      ? `https://www.google.com/maps?q=${coordinates.lat},${coordinates.lon}&z=16&output=embed`
+      : null;
   const addressEmbedUrl =
-    !embedUrl && shareUrl && hasValue(location)
+    !embedUrl && !coordinatesEmbedUrl && shareUrl && hasValue(location)
       ? `https://www.google.com/maps?q=${encodeURIComponent(location!.trim())}&output=embed`
       : null;
-  const displayEmbedUrl = embedUrl ?? addressEmbedUrl;
+  const displayEmbedUrl = embedUrl ?? coordinatesEmbedUrl ?? addressEmbedUrl;
 
   return (
     <div className={`relative overflow-hidden rounded-2xl border ${dark ? "border-white/15" : "border-slate-200"}`}>

@@ -293,7 +293,12 @@ export default async function HomePage() {
               {settings.address}
             </p>
             <div className="mt-5">
-              <MapPreview url={settings.mapEmbedUrl} location={settings.address} dark />
+              <MapPreview
+                url={settings.mapEmbedUrl}
+                location={settings.address}
+                coordinates={coordinates}
+                dark
+              />
             </div>
           </div>
 

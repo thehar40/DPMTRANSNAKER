@@ -115,6 +115,21 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
     }
   }
 
+  function handleVideoUrlChange(value: string) {
+    set("videoUrl", value);
+    if (!form.thumbnailUrl.trim()) {
+      const videoId = getYouTubeVideoId(value);
+      if (!videoId) return;
+      setThumbFromVideo(true);
+      loadYouTubeThumbnail(videoId, (thumbnail) => {
+        setThumbFromVideo(false);
+        if (thumbnail) {
+          set("thumbnailUrl", thumbnail);
+        }
+      });
+    }
+  }
+
   async function handleUploadClick() {
     if (!selectedFile) return;
     setUploading(true);
@@ -431,7 +446,7 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
           <Input
             id="videoUrl"
             value={form.videoUrl}
-            onChange={(e) => set("videoUrl", e.target.value)}
+            onChange={(e) => handleVideoUrlChange(e.target.value)}
             placeholder="https://www.youtube.com/watch?v=... atau /uploads/tutorials/video.mp4"
           />
           <FieldError>{errors.videoUrl}</FieldError>
