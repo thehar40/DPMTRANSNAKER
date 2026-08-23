@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Save } from "lucide-react";
+import { Save, UploadCloud, X } from "lucide-react";
 import { updateProfile } from "@/lib/actions/profile";
 import {
   FieldError,
@@ -13,12 +13,15 @@ import {
   Textarea,
 } from "@/components/ui/fields";
 import { profileSchema } from "@/lib/validation";
+import { uploadPublicFile } from "@/lib/upload-client";
+import { SmartImage } from "@/components/ui/smart-image";
 
 interface ProfileFormProps {
   initial: {
     welcomeTitle: string;
     welcomeName: string | null;
     welcomePosition: string | null;
+    welcomePhoto: string | null;
     welcomeText: string;
     vision: string;
     mission: string;
@@ -33,12 +36,15 @@ export function ProfileForm({ initial }: ProfileFormProps) {
     welcomeTitle: initial.welcomeTitle,
     welcomeName: initial.welcomeName ?? "",
     welcomePosition: initial.welcomePosition ?? "",
+    welcomePhoto: initial.welcomePhoto ?? "",
     welcomeText: initial.welcomeText,
     vision: initial.vision,
     mission: initial.mission,
     dutiesFunctions: initial.dutiesFunctions,
     serviceValues: initial.serviceValues,
   });
+  const [selectedPhotoFile, setSelectedPhotoFile] = useState<File | null>(null);
+  const [photoUploading, setPhotoUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +52,29 @@ export function ProfileForm({ initial }: ProfileFormProps) {
     setForm((f) => ({ ...f, [key]: value }));
     setErrors((e) => ({ ...e, [key]: "" }));
   };
+
+  async function uploadPhoto(file: File): Promise<string | null> {
+    try {
+      return await uploadPublicFile(file, "image");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Foto gagal diunggah."
+      );
+      return null;
+    }
+  }
+
+  async function handlePhotoUpload() {
+    if (!selectedPhotoFile) return;
+    setPhotoUploading(true);
+    const url = await uploadPhoto(selectedPhotoFile);
+    setPhotoUploading(false);
+    if (url) {
+      set("welcomePhoto", url);
+      setSelectedPhotoFile(null);
+      toast.success("Foto kepala dinas berhasil diunggah.");
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -61,8 +90,17 @@ export function ProfileForm({ initial }: ProfileFormProps) {
       return;
     }
     setLoading(true);
+    let welcomePhoto = form.welcomePhoto;
+    if (selectedPhotoFile) {
+      const uploaded = await uploadPhoto(selectedPhotoFile);
+      if (!uploaded) {
+        setLoading(false);
+        return;
+      }
+      welcomePhoto = uploaded;
+    }
     const fd = new FormData();
-    for (const [key, value] of Object.entries(parsed.data)) {
+    for (const [key, value] of Object.entries({ ...parsed.data, welcomePhoto })) {
       if (value !== undefined && value !== null) fd.set(key, String(value));
     }
     const result = await updateProfile(fd);
@@ -95,6 +133,63 @@ export function ProfileForm({ initial }: ProfileFormProps) {
           onChange={(e) => set("welcomeTitle", e.target.value)}
         />
         <FieldError>{errors.welcomeTitle}</FieldError>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <div className="flex flex-wrap items-center gap-4">
+          <SmartImage
+            src={form.welcomePhoto}
+            alt="Foto kepala dinas"
+            className="h-24 w-24 shrink-0 rounded-full ring-2 ring-primary-200"
+            imgClassName="rounded-full object-cover"
+            iconClassName="h-8 w-8"
+          />
+          <div className="min-w-0 flex-1">
+            <Label htmlFor="welcomePhotoFile">Foto Kepala Dinas</Label>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Input
+                id="welcomePhotoFile"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(e) => setSelectedPhotoFile(e.target.files?.[0] ?? null)}
+                className="cursor-pointer file:mr-3 file:rounded-md file:border-0 file:bg-primary-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-primary-800"
+              />
+              <button
+                type="button"
+                onClick={handlePhotoUpload}
+                disabled={!selectedPhotoFile || photoUploading || loading}
+                className="btn-secondary whitespace-nowrap"
+              >
+                <UploadCloud className="h-4 w-4" />
+                {photoUploading ? "Mengunggah..." : "Unggah Foto"}
+              </button>
+            </div>
+            {selectedPhotoFile ? (
+              <div className="mt-2 flex items-center gap-2 text-xs text-primary-700">
+                <span className="truncate">{selectedPhotoFile.name}</span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedPhotoFile(null)}
+                  className="rounded p-0.5 hover:bg-primary-100"
+                  aria-label="Hapus pilihan foto"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <div className="mt-4 border-t border-slate-200 pt-4">
+          <Label htmlFor="welcomePhoto" hint="Atau masukkan URL foto">
+            URL Foto
+          </Label>
+          <Input
+            id="welcomePhoto"
+            value={form.welcomePhoto}
+            onChange={(e) => set("welcomePhoto", e.target.value)}
+            placeholder="https://... atau /uploads/news/foto.jpg"
+          />
+        </div>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">

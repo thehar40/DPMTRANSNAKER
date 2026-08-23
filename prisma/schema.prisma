@@ -46,6 +46,7 @@ model Profile {
   welcomeName     String?
   welcomePosition String?
   welcomeText     String
+  welcomePhoto    String?
   vision          String
   mission         String
   dutiesFunctions String

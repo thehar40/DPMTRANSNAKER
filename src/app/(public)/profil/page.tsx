@@ -4,8 +4,9 @@ import { PageHeader } from "@/components/public/page-header";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { DivisionCard } from "@/components/public/division-card";
 import { Markdown } from "@/components/ui/markdown";
+import { SmartImage } from "@/components/ui/smart-image";
 import { getActiveContacts, getDivisions, getProfile } from "@/lib/data";
-import { hasValue } from "@/lib/utils";
+import { getInitials, hasValue } from "@/lib/utils";
 
 export const revalidate = 60;
 
@@ -32,6 +33,11 @@ export default async function ProfilPage() {
 
   const welcomeName = profile?.welcomeName ?? null;
   const welcomePosition = profile?.welcomePosition ?? null;
+  const welcomePhoto = profile?.welcomePhoto ?? null;
+  const welcomeInitials =
+    hasValue(welcomeName) && !welcomeName!.startsWith("[")
+      ? getInitials(welcomeName!)
+      : "KD";
 
   return (
     <div>
@@ -46,9 +52,19 @@ export default async function ProfilPage() {
         <div className="card overflow-hidden shadow-xl">
           <div className="grid lg:grid-cols-[1fr_2fr]">
             <div className="hero-grid flex flex-col items-center justify-center p-8 text-center text-white">
-              <div className="flex h-28 w-28 items-center justify-center rounded-full bg-white/15 text-3xl font-bold ring-4 ring-accent-400/60">
-                {(welcomeName ?? "KD").slice(0, 2).toUpperCase()}
-              </div>
+              {hasValue(welcomePhoto) ? (
+                <SmartImage
+                  src={welcomePhoto}
+                  alt={hasValue(welcomeName) ? welcomeName! : "Kepala Dinas"}
+                  className="h-28 w-28 shrink-0 rounded-full ring-4 ring-accent-400/60"
+                  imgClassName="rounded-full object-cover"
+                  iconClassName="h-8 w-8"
+                />
+              ) : (
+                <div className="flex h-28 w-28 items-center justify-center rounded-full bg-white/15 text-3xl font-bold ring-4 ring-accent-400/60">
+                  {welcomeInitials}
+                </div>
+              )}
               {hasValue(welcomeName) ? (
                 <p className="mt-5 text-base font-bold">{welcomeName}</p>
               ) : null}

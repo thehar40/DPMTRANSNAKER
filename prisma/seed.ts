@@ -72,6 +72,7 @@ async function main() {
     ]
       .map((v) => `- ${v}`)
       .join("\n"),
+    welcomePhoto: null,
   };
   await prisma.profile.upsert({
     where: { id: 1 },

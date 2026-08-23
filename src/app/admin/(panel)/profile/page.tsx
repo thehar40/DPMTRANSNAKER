@@ -12,6 +12,7 @@ const FALLBACK = {
   welcomeTitle: "Sambutan Kepala Dinas",
   welcomeName: null,
   welcomePosition: null,
+  welcomePhoto: null,
   welcomeText: "",
   vision: "",
   mission: "",

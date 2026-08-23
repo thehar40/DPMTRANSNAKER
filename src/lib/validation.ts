@@ -77,6 +77,7 @@ export const profileSchema = z.object({
   welcomeTitle: str(1, 200),
   welcomeName: optStr(200),
   welcomePosition: optStr(200),
+  welcomePhoto: optStr(500),
   welcomeText: str(1, 20000),
   vision: str(1, 5000),
   mission: str(1, 20000),
