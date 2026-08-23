@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Hero } from "@/components/public/hero";
+import { InfoTicker } from "@/components/public/info-ticker";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ServiceCard } from "@/components/public/service-card";
 import { DivisionCard } from "@/components/public/division-card";
-import { NewsCard } from "@/components/public/news-card";
 import { TutorialCard } from "@/components/public/tutorial-card";
 import { ContactCard } from "@/components/public/contact-card";
-import { SmartImage } from "@/components/ui/smart-image";
+import { NewsSlider } from "@/components/public/news-slider";
+import { GallerySlider } from "@/components/public/gallery-slider";
 import { MapPreview } from "@/components/public/map-preview";
 import { EmptyState } from "@/components/ui/empty-state";
 import {
@@ -20,6 +21,7 @@ import {
   getPublishedTutorials,
   getSettings,
 } from "@/lib/data";
+import { getMapCoordinates } from "@/lib/map-coords";
 import { SITE_DESCRIPTION } from "@/lib/constants";
 import { hasValue } from "@/lib/utils";
 
@@ -46,10 +48,11 @@ export default async function HomePage() {
       getDivisions(),
       getActiveServices(),
       getActiveContacts(),
-      getPublishedNews({ pageSize: 3 }),
+      getPublishedNews({ pageSize: 6 }),
       getActiveGalleries(),
       getPublishedTutorials({ take: 3 }),
     ]);
+  const coordinates = await getMapCoordinates(settings.mapEmbedUrl);
 
   const featuredServices = FEATURED_SERVICE_SLUGS.map((slug) =>
     services.find((s) => s.slug === slug)
@@ -73,7 +76,9 @@ export default async function HomePage() {
         serviceCount={services.length}
       />
 
-      <section className="relative z-10 mx-auto -mt-8 max-w-7xl px-4" aria-label="Keunggulan layanan">
+      <InfoTicker coordinates={coordinates} />
+
+      <section className="relative z-10 mx-auto max-w-7xl px-4 pt-8" aria-label="Keunggulan layanan">
         <div className="card grid gap-4 p-4 shadow-xl sm:grid-cols-3 sm:p-5">
           {[
             {
@@ -102,6 +107,86 @@ export default async function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Informasi terkini: Berita di kiri, Galeri di kanan */}
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-14 sm:py-16" aria-labelledby="informasi-terkini-heading">
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div>
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="section-kicker">Informasi Terkini</p>
+                <h2 id="informasi-terkini-heading" className="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
+                  Berita &amp; Pengumuman
+                </h2>
+              </div>
+              <Link href="/berita" className="btn-secondary !py-1.5 text-xs">
+                Lihat Semua
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+            {newsResult.items.length === 0 ? (
+              <EmptyState
+                title="Belum ada berita"
+                description="Berita dan pengumuman akan tampil di sini setelah dipublikasikan."
+              />
+            ) : (
+              <NewsSlider items={newsResult.items} />
+            )}
+          </div>
+
+          <div>
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="section-kicker">Dokumentasi</p>
+                <h2 className="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
+                  Galeri Kegiatan
+                </h2>
+              </div>
+              <Link href="/galeri" className="btn-secondary !py-1.5 text-xs">
+                Lihat Semua
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+            {galleries.length === 0 ? (
+              <EmptyState
+                title="Belum ada galeri"
+                description="Foto kegiatan akan tampil di sini setelah ditambahkan melalui panel admin."
+              />
+            ) : (
+              <GallerySlider items={galleries} />
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Panduan video - Tutorial layanan */}
+      <section className="surface-grid bg-primary-50/60 py-16 sm:py-20" aria-labelledby="tutorial-heading">
+        <div className="mx-auto max-w-7xl px-4">
+          <SectionHeading
+            eyebrow="Panduan Video"
+            title="Tutorial Layanan"
+            description="Ikuti panduan video untuk memahami proses OSS, LKPM Online, AK1, dan layanan lainnya dengan lebih mudah."
+          />
+          {tutorials.length === 0 ? (
+            <EmptyState
+              title="Belum ada tutorial"
+              description="Video tutorial akan tampil di sini setelah dipublikasikan oleh admin."
+            />
+          ) : (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {tutorials.map((tutorial) => (
+                <TutorialCard key={tutorial.id} tutorial={tutorial} />
+              ))}
+            </div>
+          )}
+          <div className="mt-10 text-center">
+            <Link href="/tutorial" className="btn-secondary">
+              Lihat Semua Tutorial
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -139,35 +224,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Tutorial layanan */}
-      <section className="surface-grid bg-primary-50/60 py-16 sm:py-20" aria-labelledby="tutorial-heading">
-        <div className="mx-auto max-w-7xl px-4">
-          <SectionHeading
-            eyebrow="Panduan Video"
-            title="Tutorial Layanan"
-            description="Ikuti panduan video untuk memahami proses OSS, LKPM Online, AK1, dan layanan lainnya dengan lebih mudah."
-          />
-          {tutorials.length === 0 ? (
-            <EmptyState
-              title="Belum ada tutorial"
-              description="Video tutorial akan tampil di sini setelah dipublikasikan oleh admin."
-            />
-          ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {tutorials.map((tutorial) => (
-                <TutorialCard key={tutorial.id} tutorial={tutorial} />
-              ))}
-            </div>
-          )}
-          <div className="mt-10 text-center">
-            <Link href="/tutorial" className="btn-secondary">
-              Lihat Semua Tutorial
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Bidang dinas */}
       <section className="bg-white py-16 sm:py-20" aria-labelledby="bidang-heading">
         <div className="mx-auto max-w-7xl px-4">
@@ -192,85 +248,6 @@ export default async function HomePage() {
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Berita terbaru */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20" aria-labelledby="berita-heading">
-        <SectionHeading
-          eyebrow="Informasi Terkini"
-          title="Berita & Pengumuman"
-          description="Informasi terbaru seputar kegiatan, pengumuman, dan layanan dinas."
-        />
-        {newsResult.items.length === 0 ? (
-          <EmptyState
-            title="Belum ada berita"
-            description="Berita dan pengumuman akan tampil di sini setelah dipublikasikan."
-            actionHref="/berita"
-            actionLabel="Lihat Halaman Berita"
-          />
-        ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {newsResult.items.map((item) => (
-              <NewsCard key={item.id} news={item} />
-            ))}
-          </div>
-        )}
-        <div className="mt-10 text-center">
-          <Link href="/berita" className="btn-secondary">
-            Lihat Semua Berita
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Galeri terbaru */}
-      <section className="bg-white py-16 sm:py-20" aria-labelledby="galeri-heading">
-        <div className="mx-auto max-w-7xl px-4">
-          <SectionHeading
-            eyebrow="Dokumentasi"
-            title="Galeri Kegiatan"
-            description="Dokumentasi kegiatan pelayanan, pelatihan, dan sosialisasi dinas."
-          />
-          {galleries.length === 0 ? (
-            <EmptyState
-              title="Belum ada galeri"
-              description="Foto kegiatan akan tampil di sini setelah ditambahkan melalui panel admin."
-            />
-          ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {galleries.slice(0, 4).map((gallery) => (
-                <Link
-                  key={gallery.id}
-                  href="/galeri"
-                  className="card group overflow-hidden"
-                >
-                  <SmartImage
-                    src={gallery.imageUrl}
-                    alt={gallery.title}
-                    className="h-44 w-full"
-                    imgClassName="transition duration-500 group-hover:scale-105"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-sm font-bold text-slate-900">
-                      {gallery.title}
-                    </h3>
-                    {gallery.category ? (
-                      <p className="mt-1 text-xs font-medium text-primary-600">
-                        {gallery.category}
-                      </p>
-                    ) : null}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-          <div className="mt-10 text-center">
-            <Link href="/galeri" className="btn-secondary">
-              Lihat Semua Galeri
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
         </div>
       </section>
 

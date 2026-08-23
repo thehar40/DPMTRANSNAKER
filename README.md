@@ -33,7 +33,7 @@ Tagline: **"Melayani dengan Profesional, Transparan, dan Akuntabel"**
 ## 3. Fitur Utama
 
 - Topbar alamat/telepon/email/jam layanan, navbar sticky dengan menu mobile.
-- Hero beranda, layanan unggulan, daftar bidang, berita terbaru, galeri, kontak cepat, lokasi & jam layanan.
+- Hero beranda, ticker jam/tanggal/perkiraan cuaca (otomatis mengikuti koordinat peta pada Pengaturan), keunggulan layanan, berita & galeri berbentuk slider berdampingan, tutorial, layanan unggulan, daftar bidang, kontak cepat, lokasi & jam layanan.
 - Halaman detail bidang dengan tugas/fungsi, layanan, contact person, dan berita terkait.
 - Halaman detail layanan dengan persyaratan, prosedur, tautan aplikasi eksternal, dan contact person.
 - Berita dengan kategori, pencarian, dan pagination. Berita draft tidak tampil untuk publik.
@@ -187,7 +187,7 @@ Format nomor WhatsApp bebas: `081234567890`, `+6281234567890`, atau `62812345678
 - **Bidang**: menu Bidang → Tambah Bidang. Isi nama, slug (otomatis), deskripsi, tugas & fungsi, ikon, urutan.
 - **Layanan**: menu Layanan → Tambah Layanan. Pilih bidang, isi persyaratan/prosedur (mendukung Markdown, gunakan `-` untuk list dan `1.` untuk langkah).
 - **Berita**: menu Berita → Tambah Berita. Konten mendukung Markdown (`##` judul, `-` list, `**tebal**`). Pilih status Draft/Terbit. Berita Terbit langsung tampil di publik.
-- **Tutorial**: menu Tutorial → Tambah Tutorial. Pilih file video maksimal 100 MB atau masukkan URL video eksternal. Simpan tutorial sebagai Draft/Terbit. URL YouTube/Vimeo otomatis ditampilkan sebagai embed, sedangkan MP4/WebM/OGG/MOV diputar dengan pemutar video.
+- **Tutorial**: menu Tutorial → Tambah Tutorial. Pilih file video maksimal 100 MB (Vercel Blob: 500 MB) atau masukkan URL video eksternal (YouTube, Vimeo, MP4). Thumbnail dapat diunggah dari PC, diisi URL, atau diambil otomatis dari video (tombol **Ambil dari Video**). Setelah video diunggah dan belum ada thumbnail, sistem akan otomatis mengambil gambar dari video. Simpan tutorial sebagai Draft/Terbit. URL YouTube/Vimeo otomatis ditampilkan sebagai embed, sedangkan MP4/WebM/OGG/MOV diputar dengan pemutar video.
 - **Galeri**: menu Galeri → Tambah Galeri. Letakkan file gambar di folder `public/images/`, lalu isi URL gambar dengan `/images/nama-file.jpg`.
 - **Sambutan/Visi Misi/Tupoksi**: menu **Profil Dinas**.
 
@@ -254,6 +254,7 @@ Website langsung online di `https://nama-proyek.vercel.app` dengan admin panel b
 - **Video gagal diunggah di Vercel**: filesystem Vercel bersifat sementara dan API biasa memiliki batas ukuran request. Buat Blob Store di menu Storage Vercel, pastikan `BLOB_READ_WRITE_TOKEN` tersedia, set `NEXT_PUBLIC_BLOB_UPLOAD_ENABLED=true`, lalu redeploy. Setelah itu menu Tutorial dapat menerima upload video langsung dari PC hingga batas yang ditentukan.
 - **Upload gambar berita**: buka menu Berita → Tambah/Edit Berita → pilih file pada bagian Gambar Cover → klik Unggah. Alternatifnya, masukkan URL gambar. File lokal memakai `public/uploads/news/`, sedangkan Vercel memakai Blob Storage jika diaktifkan.
 - **Peta tidak tampil dari `maps.app.goo.gl`**: URL tersebut adalah link berbagi, bukan URL iframe. Website akan mencoba membuat embed berdasarkan alamat dinas dan menyediakan tombol Buka di Google Maps. Untuk hasil paling akurat, masukkan URL dari Google Maps melalui Bagikan → Sematkan peta → salin nilai `src` pada menu Pengaturan.
+- **Perkiraan cuaca pada ticker**: cuaca diambil otomatis dari koordinat URL peta pada menu Pengaturan (Open-Meteo, tanpa API key). Jika koordinat tidak dapat dikenali, hanya jam dan tanggal yang ditampilkan.
 
 ### VPS (alternatif berbayar, tanpa perubahan kode)
 

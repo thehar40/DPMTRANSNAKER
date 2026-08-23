@@ -42,7 +42,9 @@ export function isValidExternalUrl(url: string | null | undefined): boolean {
   return /^https?:\/\//i.test(url.trim());
 }
 
-export function getVideoEmbedUrl(value: string | null | undefined): string | null {
+export function getYouTubeVideoId(
+  value: string | null | undefined
+): string | null {
   if (!value || !isValidExternalUrl(value)) return null;
 
   try {
@@ -55,13 +57,30 @@ export function getVideoEmbedUrl(value: string | null | undefined): string | nul
     } else if (host === "youtube.com" || host.endsWith(".youtube.com")) {
       const embedMatch = url.pathname.match(/^\/embed\/([^/]+)/);
       const shortsMatch = url.pathname.match(/^\/shorts\/([^/]+)/);
-      videoId = embedMatch?.[1] ?? shortsMatch?.[1] ?? url.searchParams.get("v") ?? "";
-    } else if (host === "vimeo.com" || host.endsWith(".vimeo.com")) {
+      videoId =
+        embedMatch?.[1] ?? shortsMatch?.[1] ?? url.searchParams.get("v") ?? "";
+    }
+
+    return /^[A-Za-z0-9_-]{6,}$/.test(videoId) ? videoId : null;
+  } catch {
+    return null;
+  }
+}
+
+export function getVideoEmbedUrl(value: string | null | undefined): string | null {
+  if (!value || !isValidExternalUrl(value)) return null;
+
+  try {
+    const url = new URL(value.trim());
+    const host = url.hostname.toLowerCase().replace(/^www\./, "");
+
+    if (host === "vimeo.com" || host.endsWith(".vimeo.com")) {
       const vimeoId = url.pathname.match(/\/(\d+)(?:$|\/)/);
       if (vimeoId?.[1]) return `https://player.vimeo.com/video/${vimeoId[1]}`;
     }
 
-    if (/^[A-Za-z0-9_-]{6,}$/.test(videoId)) {
+    const videoId = getYouTubeVideoId(value);
+    if (videoId) {
       return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
     }
   } catch {

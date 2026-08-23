@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Eye, EyeOff, PlayCircle, Save, UploadCloud, X } from "lucide-react";
+import { Eye, EyeOff, ImagePlus, PlayCircle, Save, UploadCloud, Wand2, X } from "lucide-react";
 import { createTutorial, updateTutorial } from "@/lib/actions/tutorials";
 import {
   FieldError,
@@ -16,6 +16,7 @@ import {
 import { tutorialSchema } from "@/lib/validation";
 import {
   getVideoEmbedUrl,
+  getYouTubeVideoId,
   isDirectVideoUrl,
   slugify,
   toDateTimeLocalValue,
@@ -57,10 +58,13 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
     publishedAt: toDateTimeLocalValue(tutorial?.publishedAt),
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedThumbFile, setSelectedThumbFile] = useState<File | null>(null);
   const [slugTouched, setSlugTouched] = useState(isEdit);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [thumbUploading, setThumbUploading] = useState(false);
+  const [thumbFromVideo, setThumbFromVideo] = useState(false);
   const [preview, setPreview] = useState(false);
 
   const set = (key: keyof typeof form, value: string) => {
@@ -88,6 +92,29 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
     }
   }
 
+  async function uploadThumbFromFile(file: File): Promise<string | null> {
+    try {
+      return await uploadPublicFile(file, "image");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Thumbnail gagal diunggah."
+      );
+      return null;
+    }
+  }
+
+  async function handleThumbUploadClick() {
+    if (!selectedThumbFile) return;
+    setThumbUploading(true);
+    const url = await uploadThumbFromFile(selectedThumbFile);
+    setThumbUploading(false);
+    if (url) {
+      set("thumbnailUrl", url);
+      setSelectedThumbFile(null);
+      toast.success("Thumbnail berhasil diunggah.");
+    }
+  }
+
   async function handleUploadClick() {
     if (!selectedFile) return;
     setUploading(true);
@@ -97,11 +124,139 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
         set("videoUrl", url);
         setSelectedFile(null);
         toast.success("Video berhasil diunggah. Jangan lupa simpan tutorial.");
+        if (!form.thumbnailUrl.trim()) {
+          await handleThumbFromVideo(url);
+        }
       }
     } catch {
       toast.error("Video gagal diunggah. Silakan coba lagi.");
     } finally {
       setUploading(false);
+    }
+  }
+
+  function loadYouTubeThumbnail(videoId: string, onDone: (url: string | null) => void) {
+    const candidates = [
+      `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+      `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    ];
+    let index = 0;
+
+    function tryLoad() {
+      if (index >= candidates.length) {
+        onDone(null);
+        return;
+      }
+      const image = new Image();
+      image.onload = () => onDone(candidates[index]);
+      image.onerror = () => {
+        index += 1;
+        tryLoad();
+      };
+      image.src = candidates[index];
+    }
+
+    tryLoad();
+  }
+
+  function extractVideoFrame(url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement("video");
+      video.muted = true;
+      video.crossOrigin = "anonymous";
+      video.preload = "auto";
+      video.src = url;
+
+      const timeout = window.setTimeout(() => {
+        reject(new Error("Waktu ekstraksi frame habis."));
+      }, 20000);
+
+      video.onloadeddata = () => {
+        const duration = Number.isFinite(video.duration) ? video.duration : 5;
+        video.currentTime = Math.min(1.5, Math.max(0, duration * 0.25));
+      };
+      video.onseeked = () => {
+        const width = Math.min(video.videoWidth || 640, 640);
+        const ratio = (video.videoHeight || 360) / (video.videoWidth || 640);
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = Math.round(width * ratio);
+        const context = canvas.getContext("2d");
+        if (!context) {
+          window.clearTimeout(timeout);
+          reject(new Error("Canvas tidak tersedia."));
+          return;
+        }
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        window.clearTimeout(timeout);
+        resolve(canvas.toDataURL("image/jpeg", 0.8));
+      };
+      video.onerror = () => {
+        window.clearTimeout(timeout);
+        reject(new Error("Video tidak dapat dibaca untuk diambil gambar."));
+      };
+    });
+  }
+
+  function dataUrlToFile(dataUrl: string): File {
+    const [meta, data] = dataUrl.split(",");
+    const mime = meta.match(/data:(.*?);/)?.[1] ?? "image/jpeg";
+    const binary = atob(data);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) {
+      bytes[index] = binary.charCodeAt(index);
+    }
+    return new File([bytes], "thumbnail-video.jpg", { type: mime });
+  }
+
+  async function handleThumbFromVideo(videoUrlOverride?: string) {
+    const videoUrl = (videoUrlOverride ?? form.videoUrl).trim();
+    if (!videoUrl) {
+      toast.error("Unggah video atau isi URL video terlebih dahulu.");
+      return;
+    }
+
+    setThumbFromVideo(true);
+    try {
+      const youtubeId = getYouTubeVideoId(videoUrl);
+      if (youtubeId) {
+        const thumbUrl = await new Promise<string | null>((resolve) =>
+          loadYouTubeThumbnail(youtubeId, resolve)
+        );
+        if (thumbUrl) {
+          set("thumbnailUrl", thumbUrl);
+          toast.success("Thumbnail diambil dari video YouTube.");
+          return;
+        }
+        throw new Error("Thumbnail YouTube tidak ditemukan.");
+      }
+
+      if (isDirectVideoUrl(videoUrl)) {
+        const dataUrl = await extractVideoFrame(videoUrl);
+        const file = dataUrlToFile(dataUrl);
+        const url = await uploadThumbFromFile(file);
+        if (!url) throw new Error("Thumbnail gagal diunggah.");
+        set("thumbnailUrl", url);
+        toast.success("Gambar diambil dari video dan diunggah.");
+        return;
+      }
+
+      const response = await fetch(
+        `/api/admin/uploads/video-thumb?url=${encodeURIComponent(videoUrl)}`
+      );
+      const body = await response.json().catch(() => ({}));
+      if (response.ok && body.thumbnailUrl) {
+        set("thumbnailUrl", String(body.thumbnailUrl));
+        toast.success("Thumbnail diambil dari video penyedia.");
+        return;
+      }
+      throw new Error(body.error ?? "Thumbnail tidak dapat diambil.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Thumbnail gagal diambil."
+      );
+    } finally {
+      setThumbFromVideo(false);
     }
   }
 
@@ -128,9 +283,16 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
         videoUrl = uploadedUrl;
       }
 
+      let thumbnailUrl = form.thumbnailUrl;
+      if (selectedThumbFile) {
+        const uploadedThumb = await uploadThumbFromFile(selectedThumbFile);
+        if (!uploadedThumb) return;
+        thumbnailUrl = uploadedThumb;
+      }
+
       const fd = new FormData();
       if (tutorial) fd.set("id", String(tutorial.id));
-      const payload = { ...parsed.data, videoUrl };
+      const payload = { ...parsed.data, videoUrl, thumbnailUrl };
       for (const [key, value] of Object.entries(payload)) {
         if (value === undefined || value === null) continue;
         if (value instanceof Date) fd.set(key, value.toISOString());
@@ -276,18 +438,94 @@ export function TutorialForm({ tutorial }: TutorialFormProps) {
         </div>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="thumbnailUrl" hint="URL gambar thumbnail, opsional">
-            Thumbnail
-          </Label>
-          <Input
-            id="thumbnailUrl"
-            value={form.thumbnailUrl}
-            onChange={(e) => set("thumbnailUrl", e.target.value)}
-            placeholder="/images/tutorial-oss.svg"
-          />
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">Thumbnail Tutorial</h3>
+            <p className="mt-1 text-xs leading-relaxed text-slate-500">
+              Upload gambar dari PC, masukkan URL, atau ambil thumbnail
+              otomatis dari videonya (YouTube, Vimeo, MP4).
+            </p>
+          </div>
+          <ImagePlus className="h-5 w-5 shrink-0 text-primary-600" />
         </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <Label htmlFor="thumbnailFile">Upload Gambar Thumbnail</Label>
+            <Input
+              id="thumbnailFile"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onChange={(e) => setSelectedThumbFile(e.target.files?.[0] ?? null)}
+              className="cursor-pointer file:mr-3 file:rounded-md file:border-0 file:bg-primary-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-primary-800"
+            />
+            {selectedThumbFile ? (
+              <div className="mt-2 flex items-center gap-2 text-xs text-primary-700">
+                <span className="truncate">{selectedThumbFile.name}</span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedThumbFile(null)}
+                  className="rounded p-0.5 hover:bg-primary-100"
+                  aria-label="Hapus pilihan thumbnail"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ) : null}
+          </div>
+          <button
+            type="button"
+            onClick={handleThumbUploadClick}
+            disabled={!selectedThumbFile || thumbUploading || loading}
+            className="btn-secondary whitespace-nowrap"
+          >
+            <UploadCloud className="h-4 w-4" />
+            {thumbUploading ? "Mengunggah..." : "Unggah Gambar"}
+          </button>
+        </div>
+
+        <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+          <div>
+            <Label htmlFor="thumbnailUrl" hint="Diisi otomatis setelah upload">
+              URL Thumbnail
+            </Label>
+            <Input
+              id="thumbnailUrl"
+              value={form.thumbnailUrl}
+              onChange={(e) => set("thumbnailUrl", e.target.value)}
+              placeholder="https://... atau /images/tutorial-oss.svg"
+            />
+            <FieldError>{errors.thumbnailUrl}</FieldError>
+          </div>
+          <button
+            type="button"
+            onClick={() => handleThumbFromVideo()}
+            disabled={!form.videoUrl || thumbFromVideo || thumbUploading || loading}
+            className="btn-secondary whitespace-nowrap"
+          >
+            <Wand2 className="h-4 w-4" />
+            {thumbFromVideo ? "Mengambil..." : "Ambil dari Video"}
+          </button>
+        </div>
+
+        {form.thumbnailUrl ? (
+          <div className="mt-4 flex items-start gap-3">
+            <SmartImage
+              src={form.thumbnailUrl}
+              alt="Preview thumbnail tutorial"
+              className="h-24 w-40 shrink-0 rounded-xl ring-1 ring-slate-200"
+              iconClassName="h-6 w-6"
+            />
+            <p className="pt-2 text-xs leading-relaxed text-slate-400">
+              Thumbnail ini akan tampil pada kartu Tutorial, halaman detail,
+              dan beranda.
+            </p>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="duration" hint="Contoh: 12:30">
             Durasi
