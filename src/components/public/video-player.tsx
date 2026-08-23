@@ -6,21 +6,27 @@ interface VideoPlayerProps {
   videoUrl: string | null;
   thumbnailUrl: string | null;
   title: string;
+  autoPlay?: boolean;
 }
 
 export function VideoPlayer({
   videoUrl,
   thumbnailUrl,
   title,
+  autoPlay = false,
 }: VideoPlayerProps) {
   const embedUrl = getVideoEmbedUrl(videoUrl);
   const directVideo = isDirectVideoUrl(videoUrl);
+  const embedSrc =
+    embedUrl && autoPlay
+      ? `${embedUrl}${embedUrl.includes("?") ? "&" : "?"}autoplay=1`
+      : embedUrl;
 
-  if (embedUrl) {
+  if (embedSrc) {
     return (
       <div className="aspect-video overflow-hidden rounded-2xl bg-slate-950 shadow-xl ring-1 ring-slate-200">
         <iframe
-          src={embedUrl}
+          src={embedSrc}
           title={title}
           className="h-full w-full"
           loading="lazy"
@@ -37,6 +43,7 @@ export function VideoPlayer({
         <video
           className="h-full w-full"
           controls
+          autoPlay={autoPlay}
           preload="metadata"
           poster={thumbnailUrl ?? undefined}
           aria-label={title}

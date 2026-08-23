@@ -1,7 +1,11 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, Clock3, PlayCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SmartImage } from "@/components/ui/smart-image";
+import { VideoPlayer } from "@/components/public/video-player";
 import { formatDate, truncate } from "@/lib/utils";
 
 interface TutorialCardProps {
@@ -20,21 +24,50 @@ interface TutorialCardProps {
   ribbon?: string;
 }
 
-export function TutorialCard({ tutorial, compact = false, ribbon }: TutorialCardProps) {
+export function TutorialCard({
+  tutorial,
+  compact = false,
+  ribbon,
+}: TutorialCardProps) {
+  const [playing, setPlaying] = useState(false);
+  const canPlay = !!tutorial.videoUrl;
+
   if (compact) {
     return (
       <article className="group flex gap-3 rounded-2xl border border-slate-100 bg-white p-3 transition hover:-translate-y-0.5 hover:border-primary-100 hover:shadow-lg">
         <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-xl">
-          <SmartImage
-            src={tutorial.thumbnailUrl}
-            alt={tutorial.title}
-            className="h-full w-full"
-            imgClassName="transition duration-500 group-hover:scale-105"
-            iconClassName="h-6 w-6"
-          />
-          <span className="absolute bottom-1.5 left-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-accent-400 text-primary-950">
-            <PlayCircle className="h-3.5 w-3.5" />
-          </span>
+          {playing && tutorial.videoUrl ? (
+            <div className="h-full w-full">
+              <VideoPlayer
+                videoUrl={tutorial.videoUrl}
+                thumbnailUrl={tutorial.thumbnailUrl}
+                title={tutorial.title}
+                autoPlay
+              />
+            </div>
+          ) : (
+            <>
+              <SmartImage
+                src={tutorial.thumbnailUrl}
+                alt={tutorial.title}
+                className="h-full w-full"
+                imgClassName="transition duration-500 group-hover:scale-105"
+                iconClassName="h-6 w-6"
+              />
+              {canPlay ? (
+                <button
+                  type="button"
+                  onClick={() => setPlaying(true)}
+                  aria-label={`Putar video ${tutorial.title}`}
+                  className="absolute inset-0 z-10 flex items-end justify-start p-1.5"
+                >
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-400 text-primary-950 transition hover:scale-110">
+                    <PlayCircle className="h-3.5 w-3.5" />
+                  </span>
+                </button>
+              ) : null}
+            </>
+          )}
         </div>
         <div className="min-w-0 py-0.5">
           <p className="truncate text-[10px] font-bold uppercase tracking-wider text-primary-600">
@@ -54,29 +87,57 @@ export function TutorialCard({ tutorial, compact = false, ribbon }: TutorialCard
 
   return (
     <article className="card card-interactive group flex h-full flex-col overflow-hidden">
-      <div className="relative overflow-hidden">
-        <SmartImage
-          src={tutorial.thumbnailUrl}
-          alt={tutorial.title}
-          className="aspect-video w-full"
-          imgClassName="transition duration-500 group-hover:scale-105"
-          iconClassName="h-12 w-12"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-950/55 via-transparent to-transparent" />
-        <Badge className="absolute left-3 top-3 bg-white/90 text-primary-800 ring-white/70">
-          {tutorial.category}
-        </Badge>
-        {ribbon ? (
-          <span className="absolute right-3 top-3 rounded-full bg-primary-950/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-200 backdrop-blur">
-            {ribbon}
-          </span>
+      <div className="relative">
+        {playing && tutorial.videoUrl ? (
+          <div className="aspect-video w-full">
+            <VideoPlayer
+              videoUrl={tutorial.videoUrl}
+              thumbnailUrl={tutorial.thumbnailUrl}
+              title={tutorial.title}
+              autoPlay
+            />
+          </div>
+        ) : (
+          <>
+            <SmartImage
+              src={tutorial.thumbnailUrl}
+              alt={tutorial.title}
+              className="aspect-video w-full"
+              imgClassName="transition duration-500 group-hover:scale-105"
+              iconClassName="h-12 w-12"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-950/55 via-transparent to-transparent" />
+            <Badge className="absolute left-3 top-3 bg-white/90 text-primary-800 ring-white/70">
+              {tutorial.category}
+            </Badge>
+            {ribbon ? (
+              <span className="absolute right-3 top-3 rounded-full bg-primary-950/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-200 backdrop-blur">
+                {ribbon}
+              </span>
+            ) : null}
+            <div className="absolute bottom-3 left-3 flex items-center gap-2 text-xs font-semibold text-white">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-400 text-primary-950 shadow-lg">
+                <PlayCircle className="h-5 w-5" />
+              </span>
+              {canPlay ? "Tonton video" : "Video Segera Hadir"}
+            </div>
+            {canPlay ? (
+              <button
+                type="button"
+                onClick={() => setPlaying(true)}
+                aria-label={`Putar video ${tutorial.title}`}
+                className="absolute inset-0 z-10 cursor-pointer"
+              />
+            ) : null}
+          </>
+        )}
+        {!canPlay ? (
+          <Link
+            href={`/tutorial/${tutorial.slug}`}
+            aria-label={`Buka tutorial ${tutorial.title}`}
+            className="absolute inset-0 z-10"
+          />
         ) : null}
-        <div className="absolute bottom-3 left-3 flex items-center gap-2 text-xs font-semibold text-white">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-400 text-primary-950 shadow-lg">
-            <PlayCircle className="h-5 w-5" />
-          </span>
-          {tutorial.videoUrl ? "Tonton video" : "Video Segera Hadir"}
-        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-5">
