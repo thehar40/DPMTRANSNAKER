@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Hero } from "@/components/public/hero";
 import { InfoTicker } from "@/components/public/info-ticker";
+import { HeroSlider } from "@/components/public/hero-slider";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ServiceCard } from "@/components/public/service-card";
 import { DivisionCard } from "@/components/public/division-card";
@@ -79,8 +80,7 @@ export default async function HomePage() {
       <InfoTicker coordinates={coordinates} />
 
       <section className="relative z-10 mx-auto max-w-7xl px-4 pt-6" aria-label="Keunggulan layanan">
-        <div className="card grid gap-4 p-4 shadow-xl sm:grid-cols-3 sm:p-5">
-          {[
+        <div className="card grid gap-4 p-4 shadow-xl sm:grid-cols-3 sm:p-5">          {[
             {
               title: "Informasi terarah",
               text: "Temukan layanan dan bidang sesuai kebutuhan.",
@@ -109,6 +109,13 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Sorotan berita - Hero slider */}
+      {newsResult.items.length > 0 ? (
+        <section className="mx-auto max-w-7xl px-4 pt-8" aria-label="Sorotan berita dan pengumuman">
+          <HeroSlider items={newsResult.items.slice(0, 5)} />
+        </section>
+      ) : null}
 
       {/* Informasi terkini: Berita di kiri, Galeri di kanan */}
       <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10" aria-labelledby="informasi-terkini-heading">
@@ -206,7 +213,7 @@ export default async function HomePage() {
             description="Layanan akan tampil di sini setelah ditambahkan melalui panel admin."
           />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {featuredServices.map((service) => (
               <ServiceCard
                 key={service.id}
@@ -264,7 +271,7 @@ export default async function HomePage() {
             description="Kontak bidang akan tampil di sini setelah ditambahkan melalui panel admin."
           />
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {contactGroups
               .flatMap((group) => group.contacts)
               .map((contact) => (

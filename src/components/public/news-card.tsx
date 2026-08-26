@@ -36,12 +36,12 @@ export function NewsCard({ news }: NewsCardProps) {
   const Icon = CATEGORY_ICONS[news.category] ?? Newspaper;
 
   return (
-    <article className="card card-interactive group flex h-full flex-col overflow-hidden">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative">
         <SmartImage
           src={news.coverImage}
           alt={news.title}
-          className="h-48 w-full"
+          className="h-44 w-full"
           imgClassName="transition duration-500 group-hover:scale-105"
           iconClassName="h-12 w-12"
         />
@@ -52,12 +52,12 @@ export function NewsCard({ news }: NewsCardProps) {
               NEWS_CATEGORY_STYLES.Umum)
           }
         >
-          <Icon className="h-3.5 w-3.5" />
+          <Icon className="h-3 w-3" />
           {news.category}
         </Badge>
       </div>
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
         <p className="flex items-center gap-1.5 text-xs text-slate-400">
           <CalendarDays className="h-3.5 w-3.5" />
           {formatDate(news.publishedAt)}
@@ -68,23 +68,23 @@ export function NewsCard({ news }: NewsCardProps) {
             </>
           ) : null}
         </p>
-        <h3 className="mt-2 text-lg font-bold leading-snug text-slate-900">
+        <h3 className="mt-2 line-clamp-2 text-base font-bold leading-snug text-slate-900">
           <Link
             href={`/berita/${news.slug}`}
-            className="line-clamp-2 transition group-hover:text-primary-700"
+            className="transition group-hover:text-primary-700"
           >
             {news.title}
           </Link>
         </h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-          {truncate(news.excerpt, 120)}
+        <p className="mt-2 flex-1 text-xs leading-relaxed text-slate-600">
+          {truncate(news.excerpt, 110)}
         </p>
         <Link
           href={`/berita/${news.slug}`}
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-700 transition hover:text-primary-800"
+          className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary-700 transition hover:text-primary-800"
         >
           Baca Selengkapnya
-          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+          <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
         </Link>
       </div>
     </article>

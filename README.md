@@ -20,7 +20,7 @@ Tagline: **"Melayani dengan Profesional, Transparan, dan Akuntabel"**
 - Next.js (App Router) + TypeScript
 - Tailwind CSS
 - Prisma ORM + PostgreSQL (Neon untuk deploy, bisa Postgres lokal untuk development)
-- `@vercel/blob` (penyimpanan upload video/gambar langsung di Vercel, opsional)
+- `@vercel/blob` dan `@google-cloud/storage` (penyimpanan upload video/gambar, salah satunya dipakai, opsional)
 - bcryptjs (hash password)
 - jose (session cookie JWT)
 - zod (validasi)
@@ -235,7 +235,7 @@ git push -u origin main
    - `DATABASE_URL` — Pooled connection string Neon (sama seperti di `.env`)
    - `AUTH_SECRET` — string acak panjang yang berbeda dari lokal
    - `NEXT_PUBLIC_SITE_URL` — `https://nama-proyek.vercel.app` (sesuaikan setelah deploy)
-   - `NEXT_PUBLIC_BLOB_UPLOAD_ENABLED` — `true` jika ingin upload video/gambar langsung dari PC di Vercel
+   - `NEXT_PUBLIC_STORAGE_PROVIDER` — pilihan penyimpanan upload: `local`, `blob` (Vercel Blob), `supabase` (Supabase Storage), atau `gcs` (Google Cloud Storage)
    - `BLOB_READ_WRITE_TOKEN` — otomatis tersedia setelah membuat/menghubungkan Vercel Blob Storage
 4. Klik **Deploy**. Tunggu sampai selesai.
 5. Setelah deploy, pastikan `NEXT_PUBLIC_SITE_URL` berisi URL final, lalu klik **Redeploy**.
@@ -246,12 +246,14 @@ Website langsung online di `https://nama-proyek.vercel.app` dengan admin panel b
 
 - Perubahan **konten** (berita, layanan, pengaturan) cukup dari panel admin — tidak perlu deploy ulang.
 - Perubahan **kode** otomatis ter-deploy setiap kali `git push`.
-- File gambar di folder `public/` ikut ter-deploy. Untuk upload video/gambar langsung dari panel admin di Vercel, buka **Project Settings → Storage → Create Blob Store**, lalu aktifkan `NEXT_PUBLIC_BLOB_UPLOAD_ENABLED=true` dan redeploy. Upload dilakukan langsung dari browser ke Vercel Blob sehingga tidak terkena batas body API 4,5 MB. Tanpa Blob Storage, gunakan URL YouTube/Vimeo/MP4/gambar eksternal. Upload file lokal cocok untuk komputer kantor atau VPS.
+- File gambar di folder `public/` ikut ter-deploy. Untuk upload video/gambar langsung dari panel admin di Vercel, versi penyimpanan dipakai salah satu: (1) **Vercel Blob** — buka **Project Settings → Storage → Create Blob Store**, set `NEXT_PUBLIC_STORAGE_PROVIDER=blob`, redeploy; atau (2) **Google Cloud Storage** — buat bucket + service account, set `NEXT_PUBLIC_STORAGE_PROVIDER=gcs`, `GCS_BUCKET`, `GCS_PROJECT_ID`, `GCS_CLIENT_EMAIL`, `GCS_PRIVATE_KEY`, redeploy. Upload dilakukan langsung dari browser sehingga bebas batas body API 4,5 MB. Tanpa itu, gunakan URL YouTube/Vimeo/MP4/gambar eksternal. Penyimpanan `local` cocok untuk komputer kantor atau VPS.
 - Free tier Vercel & Neon cukup untuk website dinas dengan traffic normal.
 
 ### Troubleshooting Upload dan Peta
 
-- **Video gagal diunggah di Vercel**: filesystem Vercel bersifat sementara dan API biasa memiliki batas ukuran request. Buat Blob Store di menu Storage Vercel, pastikan `BLOB_READ_WRITE_TOKEN` tersedia, set `NEXT_PUBLIC_BLOB_UPLOAD_ENABLED=true`, lalu redeploy. Setelah itu menu Tutorial dapat menerima upload video langsung dari PC hingga batas yang ditentukan.
+- **Video gagal diunggah di Vercel**: filesystem Vercel bersifat sementara dan API biasa memiliki batas ukuran request. Gunakan penyimpanan `blob` (Vercel Blob Store) atau `gcs` (Google Cloud Storage) — klik menu Storage Vercel untuk Blob, atau lengkapi variabel `GCS_*` untuk Google Cloud, lalu redeploy. Setelah itu menu Tutorial dapat menerima upload video langsung dari PC hingga batas yang ditentukan.
+- **Upload dengan Google Cloud Storage**: buat bucket (region terdekat, akses public untuk file yang ditampilkan), buat Service Account dengan peran Storage Object Admin, buat key JSON, lalu isi `GCS_PROJECT_ID`, `GCS_CLIENT_EMAIL`, dan `GCS_PRIVATE_KEY` (tanda baris baru `\n` boleh, diubah otomatis). CORS pada bucket diatur otomatis oleh aplikasi; jika gagal, atur manual di Console: izinkan PUT/GET dari `*` untuk header `Content-Type` dan `x-goog-acl`. Jika kebijakan organisasi GCP memblokir pembuatan key JSON (`iam.disableServiceAccountKeyCreation`), gunakan penyimpanan `supabase` atau `blob`.
+- **Upload dengan Supabase Storage**: buat project di https://supabase.com, buat bucket publik (mis. `dpmtransnaker`), salin URL + anon key dari Project Settings → API, set `NEXT_PUBLIC_STORAGE_PROVIDER=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_SUPABASE_BUCKET`. Tambahkan kebijakan izin upload untuk peran anon pada tabel `storage.objects` agar browser dapat mengunggah, contoh SQL: `create policy "public upload" on storage.objects for insert to anon with check (bucket_id = 'dpmtransnaker');`
 - **Upload gambar berita**: buka menu Berita → Tambah/Edit Berita → pilih file pada bagian Gambar Cover → klik Unggah. Alternatifnya, masukkan URL gambar. File lokal memakai `public/uploads/news/`, sedangkan Vercel memakai Blob Storage jika diaktifkan.
 - **Peta tidak tampil dari `maps.app.goo.gl`**: URL tersebut adalah link berbagi, bukan URL iframe. Website akan mencoba membuat embed berdasarkan alamat dinas dan menyediakan tombol Buka di Google Maps. Untuk hasil paling akurat, masukkan URL dari Google Maps melalui Bagikan → Sematkan peta → salin nilai `src` pada menu Pengaturan.
 - **Perkiraan cuaca pada ticker**: cuaca diambil otomatis dari koordinat URL peta pada menu Pengaturan (Open-Meteo, tanpa API key). Jika koordinat tidak dapat dikenali, hanya jam dan tanggal yang ditampilkan.
