@@ -196,12 +196,12 @@ select {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-7px);
+    transform: translateY(-18px);
   }
 }
 
 .animate-float-slow {
-  animation: float-slow 7s ease-in-out infinite;
+  animation: float-slow 4s ease-in-out infinite;
 }
 
 @keyframes marquee {
