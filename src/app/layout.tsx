@@ -38,7 +38,8 @@ export const metadata: Metadata = {
     description: SITE_TAGLINE,
   },
   icons: {
-    icon: "/logo-aceh-utara.svg",
+    icon: "/logo-aceh-utara.png",
+    apple: "/logo-aceh-utara.png",
   },
 };
 

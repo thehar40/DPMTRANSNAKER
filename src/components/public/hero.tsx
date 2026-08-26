@@ -25,7 +25,7 @@ export function Hero({ tagline, divisionCount, serviceCount }: HeroProps) {
         className="pointer-events-none absolute right-10 top-10 hidden h-40 w-40 rounded-full border border-white/10 lg:block"
       />
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:py-12 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:py-10">
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:py-12 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:py-6">
         <div>
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent-400/40 bg-accent-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent-200">
             <ClipboardList className="h-3.5 w-3.5" />
