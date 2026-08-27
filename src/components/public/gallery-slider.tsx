@@ -66,6 +66,8 @@ export function GallerySlider({ items }: { items: GalleryItem[] }) {
     <div
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
       <div className="mb-3 flex justify-end gap-2">
         <button

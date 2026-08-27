@@ -12,54 +12,74 @@ interface BreadcrumbProps {
 }
 
 export function Breadcrumb({ items, light = false }: BreadcrumbProps) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Beranda", item: "/" },
+      ...items.map((item, index) => ({
+        "@type": "ListItem" as const,
+        position: index + 2,
+        name: item.label,
+        ...(item.href ? { item: item.href } : {}),
+      })),
+    ],
+  };
+
   return (
-    <nav aria-label="Breadcrumb" className="text-sm">
-      <ol className="flex flex-wrap items-center gap-1.5">
-        <li>
-          <Link
-            href="/"
-            className={light ? "text-white/70 hover:text-white" : "text-slate-500 hover:text-primary-700"}
-          >
-            <Home className="h-3.5 w-3.5" />
-            <span className="sr-only">Beranda</span>
-          </Link>
-        </li>
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
-          return (
-            <li key={`${item.label}-${index}`} className="flex items-center gap-1.5">
-              <ChevronRight
-                className={light ? "h-3.5 w-3.5 text-white/40" : "h-3.5 w-3.5 text-slate-300"}
-                aria-hidden="true"
-              />
-              {isLast || !item.href ? (
-                <span
-                  aria-current={isLast ? "page" : undefined}
-                  className={
-                    light
-                      ? "font-medium text-white"
-                      : "font-medium text-slate-700"
-                  }
-                >
-                  {item.label}
-                </span>
-              ) : (
-                <Link
-                  href={item.href}
-                  className={
-                    light
-                      ? "text-white/70 hover:text-white"
-                      : "text-slate-500 hover:text-primary-700"
-                  }
-                >
-                  {item.label}
-                </Link>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <nav aria-label="Breadcrumb" className="text-sm">
+        <ol className="flex flex-wrap items-center gap-1.5">
+          <li>
+            <Link
+              href="/"
+              className={light ? "text-white/70 hover:text-white" : "text-slate-500 hover:text-primary-700"}
+            >
+              <Home className="h-3.5 w-3.5" />
+              <span className="sr-only">Beranda</span>
+            </Link>
+          </li>
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+            return (
+              <li key={`${item.label}-${index}`} className="flex items-center gap-1.5">
+                <ChevronRight
+                  className={light ? "h-3.5 w-3.5 text-white/40" : "h-3.5 w-3.5 text-slate-300"}
+                  aria-hidden="true"
+                />
+                {isLast || !item.href ? (
+                  <span
+                    aria-current={isLast ? "page" : undefined}
+                    className={
+                      light
+                        ? "font-medium text-white"
+                        : "font-medium text-slate-700"
+                    }
+                  >
+                    {item.label}
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={
+                      light
+                        ? "text-white/70 hover:text-white"
+                        : "text-slate-500 hover:text-primary-700"
+                    }
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    </>
   );
 }
 

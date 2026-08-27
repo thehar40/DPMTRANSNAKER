@@ -49,6 +49,7 @@ export function VideoPlayer({
           aria-label={title}
         >
           <source src={videoUrl} />
+          <track kind="captions" label="Bahasa Indonesia" srcLang="id" default />
           Browser Anda tidak mendukung pemutar video.
         </video>
       </div>

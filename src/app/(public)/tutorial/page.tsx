@@ -66,7 +66,7 @@ export default async function TutorialPage({
         breadcrumbs={[{ label: "Tutorial" }]}
       />
 
-      <section className="mx-auto max-w-7xl px-4 py-12">
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
         <div className="relative mb-10 overflow-hidden rounded-3xl bg-gradient-to-br from-primary-50 via-white to-accent-50 p-6 ring-1 ring-primary-100 sm:p-8">
           <div className="pointer-events-none absolute -right-8 -top-16 h-48 w-48 rounded-full bg-accent-400/15 blur-3xl" />
           <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">

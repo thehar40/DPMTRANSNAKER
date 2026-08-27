@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -15,24 +16,20 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
 }
 
-export function Button({
-  className,
-  variant = "primary",
-  href,
-  children,
-  ...props
-}: ButtonProps) {
-  if (href) {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button({ className, variant = "primary", href, children, ...props }, ref) {
+    if (href) {
+      return (
+        <Link href={href} className={cn(variants[variant], className)}>
+          {children}
+        </Link>
+      );
+    }
+
     return (
-      <Link href={href} className={cn(variants[variant], className)}>
+      <button ref={ref} className={cn(variants[variant], className)} {...props}>
         {children}
-      </Link>
+      </button>
     );
   }
-
-  return (
-    <button className={cn(variants[variant], className)} {...props}>
-      {children}
-    </button>
-  );
-}
+);

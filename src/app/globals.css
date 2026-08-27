@@ -227,6 +227,28 @@ select {
   display: none;
 }
 
+/* High-contrast mode */
+.high-contrast {
+  --page-ink: #000;
+  --page-muted: #333;
+}
+
+.high-contrast body {
+  background: white !important;
+  background-image: none !important;
+  color: #000 !important;
+}
+
+.high-contrast .card {
+  border-color: #000 !important;
+}
+
+.high-contrast .text-slate-500,
+.high-contrast .text-slate-600,
+.high-contrast .text-slate-400 {
+  color: #333 !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -238,5 +260,42 @@ select {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body {
+    background: white !important;
+    background-image: none !important;
+    color: black !important;
+  }
+
+  header,
+  footer,
+  .floating-whatsapp,
+  .btn-primary,
+  .btn-secondary,
+  .btn-icon,
+  nav[aria-label="Menu utama"],
+  nav[aria-label="Menu seluler"],
+  .animate-marquee {
+    display: none !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75rem;
+    color: #475569;
+  }
+
+  .hero-grid,
+  .page-header-grid {
+    background: #134e4a !important;
+    background-image: none !important;
   }
 }

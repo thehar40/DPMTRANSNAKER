@@ -55,6 +55,8 @@ export function HeroSlider({ items }: { items: HeroSliderItem[] }) {
       className="relative"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
       <div ref={emblaRef} className="overflow-hidden rounded-2xl shadow-xl">
         <div className="flex">

@@ -24,7 +24,7 @@ export default async function GalleryPage() {
         breadcrumbs={[{ label: "Galeri" }]}
       />
 
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-12 sm:py-16">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20">
         <div className="mb-8 flex items-start gap-4 rounded-2xl border border-primary-100 bg-white/80 p-5 shadow-sm sm:p-6">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary-50 text-primary-700">
             <Image className="h-5 w-5" />

@@ -57,6 +57,8 @@ export function ServiceCard({ service, whatsapp }: ServiceCardProps) {
       <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
         <Link
           href={`/layanan/${service.slug}`}
+          tabIndex={-1}
+          aria-hidden="true"
           className="inline-flex items-center gap-1 text-xs font-semibold text-primary-700 transition hover:text-primary-800"
         >
           Detail Layanan

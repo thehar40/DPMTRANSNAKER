@@ -42,7 +42,7 @@ export default async function ContactPage() {
       />
 
       {/* Informasi kontak */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-12 sm:py-16">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <div className="card card-interactive p-6">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-50 text-primary-700 ring-1 ring-primary-100">
@@ -88,7 +88,7 @@ export default async function ContactPage() {
       </section>
 
       {/* Peta + form */}
-      <section className="bg-white py-14 sm:py-16">
+      <section className="bg-white py-16 sm:py-20">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-2">
           <div>
             <h2 className="text-xl font-bold text-slate-900">Lokasi Kantor</h2>
@@ -124,7 +124,7 @@ export default async function ContactPage() {
       </section>
 
       {/* Contact person per bidang */}
-      <section className="mx-auto max-w-7xl px-4 py-14">
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-20">
         <h2 className="text-xl font-bold text-slate-900">
           Contact Person per Bidang
         </h2>

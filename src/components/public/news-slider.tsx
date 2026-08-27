@@ -68,6 +68,8 @@ export function NewsSlider({ items }: { items: NewsItem[] }) {
     <div
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
       <div className="mb-3 flex justify-end gap-2">
         <button

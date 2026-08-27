@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { Logo } from "@/components/logo/logo";
+import { SearchModal } from "@/components/layout/search-modal";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
@@ -21,6 +22,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
@@ -32,6 +34,20 @@ export function Navbar() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen((v) => !v);
+      }
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -70,6 +86,14 @@ export function Navbar() {
               ) : null}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="btn-icon ml-1"
+            aria-label="Pencarian (Ctrl+K)"
+          >
+            <Search className="h-4 w-4" />
+          </button>
           <Link href="/kontak" className="btn-primary ml-2 !px-4 !py-2">
             Hubungi Kami
           </Link>
@@ -106,12 +130,21 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
+            <button
+              type="button"
+              onClick={() => { setSearchOpen(true); setOpen(false); }}
+              className="btn-secondary mt-3 w-full"
+            >
+              <Search className="h-4 w-4" />
+              Cari...
+            </button>
             <Link href="/kontak" className="btn-primary mt-3 w-full">
               Hubungi Kami
             </Link>
           </nav>
         </div>
       ) : null}
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }

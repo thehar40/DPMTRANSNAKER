@@ -200,13 +200,11 @@ export default async function HomePage() {
       {/* Layanan unggulan */}
       <section className="surface-grid mx-auto max-w-7xl px-4 py-10 sm:py-12" aria-labelledby="layanan-heading">
         <SectionHeading
+          id="layanan-heading"
           eyebrow="Layanan Unggulan"
           title="Layanan Kami"
           description="Berbagai layanan perizinan, penanaman modal, transmigrasi, hubungan industrial, dan pelatihan kerja untuk masyarakat dan pelaku usaha."
         />
-        <div id="layanan-heading" className="sr-only">
-          Layanan Kami
-        </div>
         {featuredServices.length === 0 ? (
           <EmptyState
             title="Belum ada layanan"

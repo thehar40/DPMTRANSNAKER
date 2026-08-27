@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { SmartImage } from "@/components/ui/smart-image";
 import { NEWS_CATEGORY_STYLES } from "@/lib/constants";
-import { formatDate, truncate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Pengumuman: Megaphone,
@@ -76,11 +76,13 @@ export function NewsCard({ news }: NewsCardProps) {
             {news.title}
           </Link>
         </h3>
-        <p className="mt-2 flex-1 text-xs leading-relaxed text-slate-600">
-          {truncate(news.excerpt, 110)}
+        <p className="mt-2 flex-1 line-clamp-3 text-xs leading-relaxed text-slate-600">
+          {news.excerpt}
         </p>
         <Link
           href={`/berita/${news.slug}`}
+          tabIndex={-1}
+          aria-hidden="true"
           className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary-700 transition hover:text-primary-800"
         >
           Baca Selengkapnya

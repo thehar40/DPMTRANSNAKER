@@ -6,6 +6,7 @@ interface SectionHeadingProps {
   description?: string;
   align?: "left" | "center";
   light?: boolean;
+  id?: string;
 }
 
 export function SectionHeading({
@@ -14,6 +15,7 @@ export function SectionHeading({
   description,
   align = "center",
   light = false,
+  id,
 }: SectionHeadingProps) {
   return (
     <div
@@ -33,6 +35,7 @@ export function SectionHeading({
         </p>
       ) : null}
       <h2
+        id={id}
         className={cn(
           "text-balance text-2xl font-bold sm:text-3xl",
           light ? "text-white" : "text-slate-900"
