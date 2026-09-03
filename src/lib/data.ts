@@ -201,3 +201,15 @@ export async function getActiveGalleries() {
     return [];
   }
 }
+
+export async function getSiteStats() {
+  try {
+    const stat = await prisma.siteStat.findUnique({ where: { id: 1 } });
+    return {
+      totalVisits: stat?.totalVisits ?? 0,
+      todayVisits: stat?.todayVisits ?? 0,
+    };
+  } catch {
+    return { totalVisits: 0, todayVisits: 0 };
+  }
+}

@@ -8,6 +8,7 @@ import {
   MessageSquare,
   Newspaper,
   PlayCircle,
+  Star,
   Users,
 } from "lucide-react";
 import { prisma } from "@/lib/db";
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 
 async function getStats() {
   try {
-    const [divisions, services, contacts, news, tutorials, galleries, inquiries] =
+    const [divisions, services, contacts, news, tutorials, galleries, inquiries, feedbacks] =
       await Promise.all([
         prisma.division.count(),
         prisma.service.count(),
@@ -31,8 +32,9 @@ async function getStats() {
         prisma.tutorial.count(),
         prisma.gallery.count(),
         prisma.inquiry.count(),
+        prisma.feedback.count(),
       ]);
-    return { divisions, services, contacts, news, tutorials, galleries, inquiries };
+    return { divisions, services, contacts, news, tutorials, galleries, inquiries, feedbacks };
   } catch {
     return {
       divisions: 0,
@@ -42,6 +44,7 @@ async function getStats() {
       tutorials: 0,
       galleries: 0,
       inquiries: 0,
+      feedbacks: 0,
     };
   }
 }
@@ -70,6 +73,7 @@ export default async function AdminDashboardPage() {
     { label: "Tutorial", value: stats.tutorials, icon: PlayCircle, href: "/admin/tutorials", color: "bg-indigo-50 text-indigo-700" },
     { label: "Galeri", value: stats.galleries, icon: Image, href: "/admin/galleries", color: "bg-purple-50 text-purple-700" },
     { label: "Pertanyaan", value: stats.inquiries, icon: MessageSquare, href: "/admin/inquiries", color: "bg-red-50 text-red-600" },
+    { label: "Feedback", value: stats.feedbacks, icon: Star, href: "/admin/feedbacks", color: "bg-amber-50 text-accent-600" },
   ];
 
   return (

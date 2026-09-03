@@ -156,6 +156,16 @@ export const gallerySchema = z.object({
   status: z.enum(["active", "inactive"]),
 });
 
+export const feedbackSchema = z.object({
+  name: str(1, 120, "Nama wajib diisi"),
+  email: optEmail,
+  rating: z.preprocess(
+    (v) => (v === "" || v == null || Number(v) === 0 ? null : Number(v)),
+    z.number().int().min(1, "Rating harus 1-5").max(5).nullable().optional()
+  ),
+  message: str(1, 5000, "Pesan wajib diisi"),
+});
+
 export type SettingInput = z.infer<typeof settingSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;
 export type DivisionInput = z.infer<typeof divisionSchema>;

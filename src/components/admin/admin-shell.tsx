@@ -16,6 +16,7 @@ import {
   Newspaper,
   PlayCircle,
   Settings,
+  Star,
   Users,
   X,
 } from "lucide-react";
@@ -33,6 +34,7 @@ const NAV_ITEMS = [
   { href: "/admin/tutorials", label: "Tutorial", icon: PlayCircle },
   { href: "/admin/galleries", label: "Galeri", icon: Image },
   { href: "/admin/inquiries", label: "Pertanyaan", icon: MessageSquare },
+  { href: "/admin/feedbacks", label: "Feedback", icon: Star },
 ];
 
 function SidebarContent({

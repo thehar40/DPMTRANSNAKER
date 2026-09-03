@@ -160,3 +160,21 @@ model Inquiry {
   status     String   @default("new")
   createdAt  DateTime @default(now())
 }
+
+model SiteStat {
+  id          Int      @id @default(1)
+  totalVisits Int      @default(0)
+  todayVisits Int      @default(0)
+  lastReset   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String?
+  rating    Int?
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+}

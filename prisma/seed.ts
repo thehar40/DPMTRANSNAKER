@@ -98,6 +98,16 @@ async function main() {
   console.log("  ✓ User admin (username: admin)");
 
   // ---------------------------------------------------------------
+  // Statistik kunjungan (total & hari ini)
+  // ---------------------------------------------------------------
+  await prisma.siteStat.upsert({
+    where: { id: 1 },
+    update: {},
+    create: { id: 1, totalVisits: 0, todayVisits: 0, lastReset: new Date() },
+  });
+  console.log("  ✓ SiteStat");
+
+  // ---------------------------------------------------------------
   // Bidang / unit kerja
   // ---------------------------------------------------------------
   const divisions = [

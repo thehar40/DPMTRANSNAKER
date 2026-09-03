@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { FloatingWhatsApp } from "@/components/layout/floating-whatsapp";
 import { AccessibilityWidget } from "@/components/layout/accessibility-widget";
+import { SiteFooterBar } from "@/components/public/site-footer-bar";
 import { getSettings } from "@/lib/data";
 
 export default async function PublicLayout({
@@ -18,6 +19,7 @@ export default async function PublicLayout({
       <Navbar />
       <main className="site-main flex-1">{children}</main>
       <Footer />
+      <SiteFooterBar />
       <FloatingWhatsApp whatsapp={settings.whatsapp} />
       <AccessibilityWidget />
     </div>
