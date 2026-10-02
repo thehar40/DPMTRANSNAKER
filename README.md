@@ -338,3 +338,8 @@ Semua dapat diganti melalui panel admin tanpa mengubah kode.
 | `npm run db:seed`     | Isi data awal                               |
 | `npm run db:migrate`  | Migrasi Prisma (untuk tim/pengembangan)     |
 | `npm run db:studio`   | Buka Prisma Studio (lihat/edit data)        |
+
+# perintah untuk mengungah kembali ke app versel
+git add .
+git commit -m "Beranda: ticker waktu-cuaca, slider berita & galeri, urutan seksi baru"
+git push
