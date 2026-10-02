@@ -63,9 +63,9 @@ export function Navbar() {
         <Link
           href="/"
           className="flex items-center"
-          aria-label="Beranda Dinas Penanaman Modal, Transmigrasi dan Tenaga Kerja Kabupaten Aceh Utara"
+          aria-label="Beranda SI PEUMUDAH - Sistem Informasi Pelayanan dan Edukasi Mudah Kabupaten Aceh Utara"
         >
-          <Logo shortName="DPMTRANSNAKER" subtitle="Kabupaten Aceh Utara" />
+          <Logo shortName="SI PEUMUDAH" subtitle="Sistem Informasi Pelayanan dan Edukasi Mudah" />
         </Link>
 
         <nav className="hidden items-center gap-1 xl:flex" aria-label="Menu utama">
@@ -80,7 +80,20 @@ export function Navbar() {
                   : "text-slate-600 hover:bg-slate-50 hover:text-primary-700"
               )}
             >
-              {item.label}
+              {item.href === "/" ? (
+                <span className="inline-flex items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/logo-berakhlak.png"
+                    alt="Logo BerAKHLAK"
+                    className="h-6 w-auto shrink-0 object-contain drop-shadow-sm"
+                    title="BerAKHLAK - Berorientasi Pelayanan, Akuntabel, Kompeten, Harmonis, Loyal, Adaptif, Kolaboratif"
+                  />
+                  <span>{item.label}</span>
+                </span>
+              ) : (
+                item.label
+              )}
               {isActive(item.href) ? (
                 <span className="absolute inset-x-3 -bottom-[13px] h-0.5 rounded-full bg-accent-500" />
               ) : null}
@@ -125,7 +138,19 @@ export function Navbar() {
                         : "text-slate-700 hover:bg-slate-50"
                     )}
                   >
-                    {item.label}
+                    {item.href === "/" ? (
+                      <span className="flex items-center gap-2.5">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/images/logo-berakhlak.png"
+                          alt="Logo BerAKHLAK"
+                          className="h-6 w-auto shrink-0 object-contain"
+                        />
+                        <span>{item.label}</span>
+                      </span>
+                    ) : (
+                      item.label
+                    )}
                   </Link>
                 </li>
               ))}

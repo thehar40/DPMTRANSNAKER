@@ -63,20 +63,20 @@ export function HeroSlider({ items }: { items: HeroSliderItem[] }) {
           {items.map((item) => (
             <div
               key={item.id}
-              className="relative h-[300px] min-w-0 flex-[0_0_100%] sm:h-[400px]"
+              className="relative h-[250px] min-w-0 flex-[0_0_100%] sm:h-[330px]"
             >
               <SmartImage
                 src={item.coverImage}
                 alt={item.title}
                 className="absolute inset-0 h-full w-full"
-                iconClassName="h-14 w-14 text-white/40"
+                iconClassName="h-12 w-12 text-white/40"
               />
               <div
                 aria-hidden="true"
                 className="absolute inset-0 bg-gradient-to-t from-primary-950/95 via-primary-950/40 to-primary-950/5"
               />
 
-              <div className="absolute inset-x-0 bottom-0 p-5 pb-14 sm:p-8 sm:pb-16">
+              <div className="absolute inset-x-0 bottom-0 p-4 pb-10 sm:p-6 sm:pb-12">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge
                     className={
@@ -91,18 +91,18 @@ export function HeroSlider({ items }: { items: HeroSliderItem[] }) {
                     {formatDate(item.publishedAt)}
                   </span>
                 </div>
-                <h2 className="mt-3 line-clamp-2 max-w-3xl text-xl font-extrabold leading-snug text-white sm:text-2xl lg:text-3xl">
+                <h2 className="mt-2 line-clamp-2 max-w-3xl text-lg font-extrabold leading-snug text-white sm:text-xl lg:text-2xl">
                   {item.title}
                 </h2>
-                <p className="mt-2 hidden max-w-2xl text-sm leading-relaxed text-white/80 sm:line-clamp-2">
+                <p className="mt-1.5 hidden max-w-2xl text-xs leading-relaxed text-white/80 sm:line-clamp-2">
                   {item.excerpt}
                 </p>
                 <Link
                   href={`/berita/${item.slug}`}
-                  className="btn-primary mt-4 !bg-accent-500 !px-4 !py-2 !text-primary-950 hover:!bg-accent-400"
+                  className="btn-primary mt-3 !bg-accent-500 !px-3.5 !py-1.5 !text-xs !text-primary-950 hover:!bg-accent-400"
                 >
                   Baca Selengkapnya
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </div>

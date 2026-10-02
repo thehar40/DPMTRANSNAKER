@@ -26,7 +26,7 @@ export function DivisionCard({ division, whatsapp }: DivisionCardProps) {
     : null;
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-100 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:rounded-2xl sm:p-4.5">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-accent-400 via-primary-500 to-primary-700"
@@ -34,16 +34,16 @@ export function DivisionCard({ division, whatsapp }: DivisionCardProps) {
       <div className="flex items-start justify-between">
         <IconBadge
           name={division.icon}
-          className="h-10 w-10 rounded-xl"
-          iconClassName="h-5 w-5"
+          className="h-9 w-9 rounded-lg"
+          iconClassName="h-4.5 w-4.5"
         />
         {division.abbreviation ? (
-          <Badge className="bg-primary-50 px-2 py-0.5 text-[11px] text-primary-700 ring-primary-200">
+          <Badge className="bg-primary-50 px-2 py-0.5 text-[10.5px] text-primary-700 ring-primary-200">
             {division.abbreviation}
           </Badge>
         ) : null}
       </div>
-      <h3 className="mt-3 text-base font-semibold leading-snug text-slate-900">
+      <h3 className="mt-2 text-sm font-semibold leading-snug text-slate-900 sm:text-base">
         <Link
           href={`/bidang/${division.slug}`}
           className="transition group-hover:text-primary-700"
@@ -51,11 +51,11 @@ export function DivisionCard({ division, whatsapp }: DivisionCardProps) {
           {division.name}
         </Link>
       </h3>
-      <p className="mt-1.5 line-clamp-2 flex-1 text-xs leading-relaxed text-slate-600">
+      <p className="mt-1 line-clamp-2 flex-1 text-xs leading-relaxed text-slate-600">
         {division.description}
       </p>
-      <p className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500">
-        <Wrench className="h-3.5 w-3.5 text-primary-600" />
+      <p className="mt-2.5 inline-flex items-center gap-1.5 text-[10.5px] font-semibold text-slate-500">
+        <Wrench className="h-3 w-3 text-primary-600" />
         {division._count.services} layanan tersedia
       </p>
       <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">

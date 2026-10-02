@@ -41,9 +41,9 @@ export function NewsCard({ news }: NewsCardProps) {
         <SmartImage
           src={news.coverImage}
           alt={news.title}
-          className="h-44 w-full"
+          className="h-36 w-full sm:h-40"
           imgClassName="transition duration-500 group-hover:scale-105"
-          iconClassName="h-12 w-12"
+          iconClassName="h-10 w-10"
         />
         <Badge
           className={
@@ -57,7 +57,7 @@ export function NewsCard({ news }: NewsCardProps) {
         </Badge>
       </div>
 
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
+      <div className="flex flex-1 flex-col p-3.5 sm:p-4">
         <p className="flex items-center gap-1.5 text-xs text-slate-400">
           <CalendarDays className="h-3.5 w-3.5" />
           {formatDate(news.publishedAt)}
@@ -68,7 +68,7 @@ export function NewsCard({ news }: NewsCardProps) {
             </>
           ) : null}
         </p>
-        <h3 className="mt-2 line-clamp-2 text-base font-bold leading-snug text-slate-900">
+        <h3 className="mt-1.5 line-clamp-2 text-sm sm:text-base font-bold leading-snug text-slate-900">
           <Link
             href={`/berita/${news.slug}`}
             className="transition group-hover:text-primary-700"
@@ -76,14 +76,14 @@ export function NewsCard({ news }: NewsCardProps) {
             {news.title}
           </Link>
         </h3>
-        <p className="mt-2 flex-1 line-clamp-3 text-xs leading-relaxed text-slate-600">
+        <p className="mt-1.5 flex-1 line-clamp-2 text-xs leading-relaxed text-slate-600">
           {news.excerpt}
         </p>
         <Link
           href={`/berita/${news.slug}`}
           tabIndex={-1}
           aria-hidden="true"
-          className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary-700 transition hover:text-primary-800"
+          className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary-700 transition hover:text-primary-800"
         >
           Baca Selengkapnya
           <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />

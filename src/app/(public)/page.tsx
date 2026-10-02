@@ -79,8 +79,9 @@ export default async function HomePage() {
 
       <InfoTicker coordinates={coordinates} />
 
-      <section className="relative z-10 mx-auto max-w-7xl px-4 pt-6" aria-label="Keunggulan layanan">
-        <div className="card grid gap-4 p-4 shadow-xl sm:grid-cols-3 sm:p-5">          {[
+      <section className="relative z-10 mx-auto max-w-7xl px-4 pt-4 sm:pt-5" aria-label="Keunggulan layanan">
+        <div className="card grid gap-2.5 p-3 shadow-md sm:grid-cols-3 sm:p-3.5">
+          {[
             {
               title: "Informasi terarah",
               text: "Temukan layanan dan bidang sesuai kebutuhan.",
@@ -97,13 +98,13 @@ export default async function HomePage() {
               icon: Phone,
             },
           ].map((item) => (
-            <div key={item.title} className="flex items-center gap-3 rounded-xl p-2 sm:p-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-700">
-                <item.icon className="h-5 w-5" />
+            <div key={item.title} className="flex items-center gap-2.5 rounded-xl p-1.5 sm:p-2">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-700 sm:h-9 sm:w-9">
+                <item.icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
               </div>
               <div>
-                <p className="text-sm font-bold text-slate-900">{item.title}</p>
-                <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{item.text}</p>
+                <p className="text-xs font-bold text-slate-900 sm:text-sm">{item.title}</p>
+                <p className="mt-0.5 text-[11px] leading-snug text-slate-500">{item.text}</p>
               </div>
             </div>
           ))}
@@ -112,23 +113,23 @@ export default async function HomePage() {
 
       {/* Sorotan berita - Hero slider */}
       {newsResult.items.length > 0 ? (
-        <section className="mx-auto max-w-7xl px-4 pt-8" aria-label="Sorotan berita dan pengumuman">
+        <section className="mx-auto max-w-7xl px-4 pt-4 sm:pt-6" aria-label="Sorotan berita dan pengumuman">
           <HeroSlider items={newsResult.items.slice(0, 5)} />
         </section>
       ) : null}
 
       {/* Informasi terkini: Berita di kiri, Galeri di kanan */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10" aria-labelledby="informasi-terkini-heading">
-        <div className="grid gap-12 lg:grid-cols-2">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-5 sm:py-7" aria-labelledby="informasi-terkini-heading">
+        <div className="grid gap-8 lg:grid-cols-2">
           <div>
-            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div className="mb-3.5 flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="section-kicker">Informasi Terkini</p>
-                <h2 id="informasi-terkini-heading" className="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
+                <h2 id="informasi-terkini-heading" className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">
                   Berita &amp; Pengumuman
                 </h2>
               </div>
-              <Link href="/berita" className="btn-secondary !py-1.5 text-xs">
+              <Link href="/berita" className="btn-secondary !py-1 text-xs">
                 Lihat Semua
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -144,14 +145,14 @@ export default async function HomePage() {
           </div>
 
           <div>
-            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div className="mb-3.5 flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="section-kicker">Dokumentasi</p>
-                <h2 className="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
+                <h2 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">
                   Galeri Kegiatan
                 </h2>
               </div>
-              <Link href="/galeri" className="btn-secondary !py-1.5 text-xs">
+              <Link href="/galeri" className="btn-secondary !py-1 text-xs">
                 Lihat Semua
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -169,7 +170,7 @@ export default async function HomePage() {
       </section>
 
       {/* Panduan video - Tutorial layanan */}
-      <section className="surface-grid bg-primary-50/60 py-8 sm:py-10" aria-labelledby="tutorial-heading">
+      <section className="surface-grid bg-primary-50/60 py-5 sm:py-7" aria-labelledby="tutorial-heading">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Panduan Video"
@@ -182,23 +183,23 @@ export default async function HomePage() {
               description="Video tutorial akan tampil di sini setelah dipublikasikan oleh admin."
             />
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
               {tutorials.map((tutorial) => (
                 <TutorialCard key={tutorial.id} tutorial={tutorial} />
               ))}
             </div>
           )}
-          <div className="mt-10 text-center">
-            <Link href="/tutorial" className="btn-secondary">
+          <div className="mt-5 text-center">
+            <Link href="/tutorial" className="btn-secondary !text-xs !py-1.5">
               Lihat Semua Tutorial
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* Layanan unggulan */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-10 sm:py-12" aria-labelledby="layanan-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-5 sm:py-7" aria-labelledby="layanan-heading">
         <SectionHeading
           id="layanan-heading"
           eyebrow="Layanan Unggulan"
@@ -211,7 +212,7 @@ export default async function HomePage() {
             description="Layanan akan tampil di sini setelah ditambahkan melalui panel admin."
           />
         ) : (
-          <div className="grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
             {featuredServices.map((service) => (
               <ServiceCard
                 key={service.id}
@@ -221,16 +222,16 @@ export default async function HomePage() {
             ))}
           </div>
         )}
-        <div className="mt-10 text-center">
-          <Link href="/layanan" className="btn-primary">
+        <div className="mt-5 text-center">
+          <Link href="/layanan" className="btn-primary !text-xs !py-1.5">
             Lihat Semua Layanan
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </section>
 
       {/* Bidang dinas */}
-      <section className="bg-white py-8 sm:py-10" aria-labelledby="bidang-heading">
+      <section className="bg-white py-5 sm:py-7" aria-labelledby="bidang-heading">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Struktur Dinas"
@@ -243,7 +244,7 @@ export default async function HomePage() {
               description="Data bidang akan tampil di sini setelah ditambahkan melalui panel admin."
             />
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
               {divisions.map((division) => (
                 <DivisionCard
                   key={division.id}
@@ -257,7 +258,7 @@ export default async function HomePage() {
       </section>
 
       {/* Kontak cepat */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10" aria-labelledby="kontak-cepat-heading">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-5 sm:py-7" aria-labelledby="kontak-cepat-heading">
         <SectionHeading
           eyebrow="Hubungi Kami"
           title="Kontak Cepat Bidang"
@@ -269,35 +270,46 @@ export default async function HomePage() {
             description="Kontak bidang akan tampil di sini setelah ditambahkan melalui panel admin."
           />
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {contactGroups
-              .flatMap((group) => group.contacts)
-              .map((contact) => (
-                <ContactCard
-                  key={contact.id}
-                  contact={contact}
-                  divisionName={
-                    divisions.find((d) => d.id === contact.divisionId)?.name ??
-                    null
-                  }
-                />
-              ))}
-          </div>
+          <>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {contactGroups
+                .flatMap((group) => group.contacts)
+                .slice(0, 6)
+                .map((contact) => (
+                  <ContactCard
+                    key={contact.id}
+                    contact={contact}
+                    divisionName={
+                      divisions.find((d) => d.id === contact.divisionId)?.name ??
+                      null
+                    }
+                  />
+                ))}
+            </div>
+            {contactGroups.flatMap((group) => group.contacts).length > 6 ? (
+              <div className="mt-5 text-center">
+                <Link href="/kontak" className="btn-secondary !text-xs !py-1.5">
+                  Lihat Semua Kontak Bidang
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            ) : null}
+          </>
         )}
       </section>
 
       {/* Lokasi dan jam layanan */}
-      <section className="hero-grid py-10 text-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-2">
-          <div className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur">
-            <h2 className="flex items-center gap-2.5 text-lg font-bold">
-              <MapPin className="h-5 w-5 text-accent-300" />
+      <section className="hero-grid py-6 sm:py-8 text-white">
+        <div className="mx-auto grid max-w-7xl gap-5 sm:gap-6 px-4 lg:grid-cols-2">
+          <div className="rounded-2xl border border-white/15 bg-white/10 p-4 sm:p-5 backdrop-blur">
+            <h2 className="flex items-center gap-2 text-base sm:text-lg font-bold">
+              <MapPin className="h-4.5 w-4.5 text-accent-300" />
               Lokasi Kantor
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/85">
+            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/85">
               {settings.address}
             </p>
-            <div className="mt-5">
+            <div className="mt-3">
               <MapPreview
                 url={settings.mapEmbedUrl}
                 location={settings.address}
@@ -307,43 +319,43 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-6">
-            <div className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur">
-              <h2 className="flex items-center gap-2.5 text-lg font-bold">
-                <Clock className="h-5 w-5 text-accent-300" />
+          <div className="flex flex-col gap-3.5 sm:gap-4">
+            <div className="rounded-2xl border border-white/15 bg-white/10 p-4 sm:p-4.5 backdrop-blur">
+              <h2 className="flex items-center gap-2 text-base font-bold">
+                <Clock className="h-4.5 w-4.5 text-accent-300" />
                 Jam Layanan
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-white/85">
+              <p className="mt-2 text-xs sm:text-sm leading-relaxed text-white/85">
                 {settings.officeHours}
               </p>
-              <p className="mt-2 text-xs text-white/60">
+              <p className="mt-1 text-[11px] text-white/60">
                 Mohon maaf jika terdapat penyesuaian pada hari libur nasional
                 atau cuti bersama.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur">
-              <h2 className="flex items-center gap-2.5 text-lg font-bold">
-                <Phone className="h-5 w-5 text-accent-300" />
+            <div className="rounded-2xl border border-white/15 bg-white/10 p-4 sm:p-4.5 backdrop-blur">
+              <h2 className="flex items-center gap-2 text-base font-bold">
+                <Phone className="h-4.5 w-4.5 text-accent-300" />
                 Hubungi Kami
               </h2>
               {hasValue(settings.phone) ? (
-                <p className="mt-3 flex items-center gap-2 text-sm text-white/85">
-                  <Phone className="h-4 w-4 text-accent-300" />
+                <p className="mt-2 flex items-center gap-2 text-xs sm:text-sm text-white/85">
+                  <Phone className="h-3.5 w-3.5 text-accent-300" />
                   {settings.phone}
                 </p>
               ) : null}
               {hasValue(settings.email) ? (
-                <p className="mt-2 flex items-center gap-2 text-sm text-white/85">
-                  <Mail className="h-4 w-4 text-accent-300" />
+                <p className="mt-1.5 flex items-center gap-2 text-xs sm:text-sm text-white/85">
+                  <Mail className="h-3.5 w-3.5 text-accent-300" />
                   {settings.email}
                 </p>
               ) : null}
               <Link
                 href="/kontak"
-                className="btn-primary mt-5 !bg-accent-500 !text-primary-950 hover:!bg-accent-400"
+                className="btn-primary mt-3.5 !bg-accent-500 !px-4 !py-2 !text-xs !text-primary-950 hover:!bg-accent-400"
               >
                 Buka Halaman Kontak
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>

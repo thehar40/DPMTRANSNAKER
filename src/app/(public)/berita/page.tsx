@@ -63,7 +63,7 @@ export default async function NewsPage({
         breadcrumbs={[{ label: "Berita" }]}
       />
 
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10">
         <div className="mb-8">
           <SectionHeading
             align="left"

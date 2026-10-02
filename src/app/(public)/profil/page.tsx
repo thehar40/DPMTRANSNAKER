@@ -48,7 +48,7 @@ export default async function ProfilPage() {
       />
 
       {/* Sambutan kepala dinas */}
-      <section className="mx-auto max-w-7xl px-4 py-16">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:py-10">
         <div className="card overflow-hidden shadow-xl">
           <div className="grid lg:grid-cols-[1fr_2fr]">
             <div className="hero-grid flex flex-col items-center justify-center p-8 text-center text-white">
@@ -93,7 +93,7 @@ export default async function ProfilPage() {
       </section>
 
       {/* Visi dan misi */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-8 sm:py-10">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Arah Pembangunan"
@@ -128,7 +128,7 @@ export default async function ProfilPage() {
       </section>
 
       {/* Tupoksi */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-16">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10">
         <SectionHeading
           eyebrow="Landasan Kerja"
           title="Tugas Pokok dan Fungsi"
@@ -142,7 +142,7 @@ export default async function ProfilPage() {
       </section>
 
       {/* Struktur organisasi sederhana */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-8 sm:py-10">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Organisasi"
@@ -184,7 +184,7 @@ export default async function ProfilPage() {
       </section>
 
       {/* Nilai pelayanan */}
-      <section className="surface-grid mx-auto max-w-7xl px-4 py-16">
+      <section className="surface-grid mx-auto max-w-7xl px-4 py-8 sm:py-10">
         <SectionHeading
           eyebrow="Komitmen Kami"
           title="Nilai Pelayanan"
@@ -214,7 +214,7 @@ export default async function ProfilPage() {
       </section>
 
       {/* Daftar bidang */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-8 sm:py-10">
         <div className="mx-auto max-w-7xl px-4">
           <SectionHeading
             eyebrow="Unit Kerja"
