@@ -162,9 +162,9 @@ export function Navbar() {
                 title={BERAKHLAK_TITLE}
                 onError={() => setBerakhlakOk(false)}
                 className="
-                  h-14
+                  h-20
                   w-auto
-                  max-w-[190px]
+                  max-w-[260px]
                   shrink-0
                   object-contain
                   drop-shadow-sm
