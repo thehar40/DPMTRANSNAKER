@@ -4,12 +4,12 @@ import { notFound } from "next/navigation";
 import { CalendarDays, UserRound } from "lucide-react";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Badge } from "@/components/ui/badge";
-import { SmartImage } from "@/components/ui/smart-image";
 import { Markdown } from "@/components/ui/markdown";
 import { NewsCard } from "@/components/public/news-card";
 import { NEWS_CATEGORY_STYLES } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 import { getNewsBySlug, getPublishedNews } from "@/lib/data";
+import { ImageSlider } from "@/components/public/image-slider";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -41,6 +41,11 @@ export default async function NewsDetailPage({
     pageSize: 3,
   });
 
+  const allImages: string[] = [
+    ...(news.coverImage ? [news.coverImage] : []),
+    ...(Array.isArray(news.images) ? news.images : []),
+  ].filter((url, idx, arr) => Boolean(url) && arr.indexOf(url) === idx);
+
   return (
     <div>
       <section className="page-header-grid py-10 text-white">
@@ -68,21 +73,25 @@ export default async function NewsDetailPage({
               </Link>
             ) : null}
           </div>
-          <h1 className="mt-4 text-2xl font-extrabold leading-snug sm:text-3xl">
+          <h1 className="mt-4 text-2xl font-bold leading-snug sm:text-3xl lg:text-4xl">
             {news.title}
           </h1>
         </div>
       </section>
 
-      <div className="surface-grid mx-auto max-w-7xl px-4 py-12 sm:py-16">
-        <div className="grid gap-10 lg:grid-cols-3">
-          <article className="lg:col-span-2">
-            <SmartImage
-              src={news.coverImage}
-              alt={news.title}
-              className="h-64 w-full rounded-2xl sm:h-80"
-              iconClassName="h-16 w-16"
-            />
+      <div className="bg-slate-50 py-12">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 lg:grid-cols-[1fr_320px]">
+          <article className="min-w-0">
+            {/* Interactive Image or Slideshow with Lightbox */}
+            {allImages.length > 0 && (
+              <div className="mb-6">
+                <ImageSlider
+                  images={allImages}
+                  alts={allImages.map((_, i) => `${news.title} (Gambar ${i + 1})`)}
+                />
+              </div>
+            )}
+
             <p className="mt-6 rounded-r-2xl border-l-4 border-accent-400 bg-accent-50 px-5 py-4 text-sm font-medium italic leading-relaxed text-slate-700">
               {news.excerpt}
             </p>

@@ -113,6 +113,7 @@ model News {
   excerpt     String
   content     String
   coverImage  String?
+  images      String[]  @default([])
   status      String    @default("draft")
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
@@ -143,6 +144,7 @@ model Gallery {
   description String?
   category    String?
   imageUrl    String
+  images      String[] @default([])
   order       Int      @default(0)
   status      String   @default("active")
   createdAt   DateTime @default(now())

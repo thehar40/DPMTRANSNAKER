@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { GalleryCard } from "@/components/public/gallery-card";
-import { SmartImage } from "@/components/ui/smart-image";
 import { Modal } from "@/components/ui/modal";
+import { ImageSlider } from "@/components/public/image-slider";
 import { cn } from "@/lib/utils";
 import type { Gallery } from "@prisma/client";
 
@@ -69,27 +69,40 @@ export function GalleryGrid({ galleries }: { galleries: Gallery[] }) {
 
       <Modal
         open={!!selected}
-        title={selected?.title ?? "Pratinjau gambar"}
+        title={selected?.title ?? "Pratinjau galeri"}
         onClose={() => setSelected(null)}
         size="xl"
       >
         {selected ? (
-          <>
-            <SmartImage
-              src={selected.imageUrl}
-              alt={selected.title}
-              className="h-[60vh] max-h-[70vh] w-full bg-slate-950"
-              imgClassName="object-contain"
-              iconClassName="h-16 w-16"
-            />
+          <div>
+            {(() => {
+              const selectedImages = [
+                selected.imageUrl,
+                ...(selected.images || []),
+              ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i);
+
+              return (
+                <div className="overflow-hidden rounded-t-xl bg-slate-950">
+                  <ImageSlider
+                    images={selectedImages}
+                    alts={selectedImages.map((_, i) => `${selected.title} - Foto ${i + 1}`)}
+                  />
+                </div>
+              );
+            })()}
             <div className="p-5">
+              {selected.category ? (
+                <span className="mb-2 inline-block rounded-md bg-primary-50 px-2.5 py-1 text-xs font-semibold text-primary-700">
+                  {selected.category}
+                </span>
+              ) : null}
               {selected.description ? (
                 <p className="text-sm leading-relaxed text-slate-600">
                   {selected.description}
                 </p>
               ) : null}
             </div>
-          </>
+          </div>
         ) : null}
       </Modal>
     </div>

@@ -129,6 +129,10 @@ export const newsSchema = z.object({
   excerpt: str(1, 1000),
   content: str(1, 50000),
   coverImage: optStr(500),
+  images: z.preprocess(
+    (v) => (v === "" || v == null ? [] : typeof v === "string" ? JSON.parse(v) : v),
+    z.array(z.string().url().or(z.string().startsWith("/"))).default([])
+  ),
   status: z.enum(["draft", "published"]),
   publishedAt: optDateTime,
 });
@@ -152,6 +156,10 @@ export const gallerySchema = z.object({
   description: optStr(1000),
   category: optStr(100),
   imageUrl: str(1, 500),
+  images: z.preprocess(
+    (v) => (v === "" || v == null ? [] : typeof v === "string" ? JSON.parse(v) : v),
+    z.array(z.string().url().or(z.string().startsWith("/"))).default([])
+  ),
   order: int(),
   status: z.enum(["active", "inactive"]),
 });
